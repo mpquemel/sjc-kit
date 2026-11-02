@@ -1,0 +1,10 @@
+Processo: 9000001-49.2026.8.19.0037
+Classe: Procedimento Comum Cível
+Orgao julgador: 1a Vara Cível
+
+ID 1 - Peticao Inicial (fls. 1/12)
+ID 2 - Certidao de Publicacao (fls. 14)
+ID 3 - Contestacao (fls. 20/35)
+ID 4 - Decisao Saneadora (fls. 46)
+ID 5 - Laudo Pericial (fls. 88/102)
+ID 6 - Manifestacao das Partes (fls. 110)

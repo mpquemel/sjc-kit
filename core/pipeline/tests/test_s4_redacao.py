@@ -263,7 +263,7 @@ def t_integracao_s3_s4_s5_s6():
         nome = "entrada-de-teste"
         depende_de = []  # type: ignore[assignment]
         entrada_obriga = []  # type: ignore[assignment]
-        saida_obriga = ["caso_id", "dominio_id", "documentos", "polo_atuacao"]  # type: ignore[assignment]
+        saida_obriga = ["caso_id", "dominio_id", "polo_atuacao"]  # type: ignore[assignment]
 
         def executar(self, ctx):
             return dict(ctx.artefatos.get("S0") or {})
@@ -273,8 +273,6 @@ def t_integracao_s3_s4_s5_s6():
         "dominio_id": "familia",
         "polo_atuacao": "ativo",
         "consulta_fonte": False,
-        "documentos": [documento("sentenca", resultado="procedente",
-                                 texto="Julgo procedente o pedido.")],
     }
 
     s4 = S4Redacao()
@@ -282,7 +280,25 @@ def t_integracao_s3_s4_s5_s6():
     s4._carregar_dominio = lambda d: {"modelos": {"default": {
         "provider": "local", "modelo": "m", "motivo": "teste de integração"}}}
 
-    res = Runner([S0Falso(), S3Estrategia(), s4, S5Citacoes(), S6Gates()],
+
+    class S1Falso(Stage):
+        """S1 mínimo: `documentos` nasce no S1, não no S0.
+
+        S3 declara `depende_de = ["S0", "S1"]` porque é o S1 que produz os
+        documentos tipados. Sem S1 no DAG de teste, o runner recusa o grafo
+        por dependência inexistente — comportamento correto, não defeito.
+        """
+        id = "S1"
+        nome = "conversao-de-teste"
+        depende_de = ["S0"]  # type: ignore[assignment]
+        entrada_obriga = []  # type: ignore[assignment]
+        saida_obriga = ["documentos"]  # type: ignore[assignment]
+
+        def executar(self, ctx):
+            return {"documentos": [documento("sentenca", resultado="procedente",
+                                             texto="Julgo procedente o pedido.")]}
+
+    res = Runner([S0Falso(), S1Falso(), S3Estrategia(), s4, S5Citacoes(), S6Gates()],
                  ctx).rodar()
     assert res["parada"] == "fim", f"parada={res['parada']} em {res['estagio']}"
 

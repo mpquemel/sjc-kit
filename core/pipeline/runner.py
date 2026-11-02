@@ -196,6 +196,15 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 0
 
     ctx = PipelineContext(Path(args.pasta_caso), args.dominio)
+    # Carrega caso.json ANTES do DAG. Sem isto, `artefatos["S0"]` nunca é
+    # populado a partir de disco e o S0 falha por "campo obrigatório ausente"
+    # em toda execução real — falha que os testes escondiam porque montavam
+    # o artefato à mão.
+    entradas = ctx.carregar_entrada_do_caso()
+    if args.dominio and "dominio_id" not in entradas:
+        entradas["dominio_id"] = args.dominio
+    if entradas:
+        ctx.artefatos["S0"] = entradas
     runner = Runner(dag_canonico(ESTAGIOS), ctx)
     res = runner.rodar(ate=args.ate)
     print(formatar(res))

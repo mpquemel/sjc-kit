@@ -261,7 +261,7 @@ def t_integracao_s3_para_s6_no_runner():
         nome = "entrada-de-teste"
         depende_de = []  # type: ignore[assignment]
         entrada_obriga = []  # type: ignore[assignment]
-        saida_obriga = ["caso_id", "dominio_id", "documentos", "polo_atuacao",
+        saida_obriga = ["caso_id", "dominio_id", "polo_atuacao",
                         "peca_texto"]  # type: ignore[assignment]
 
         def executar(self, ctx):
@@ -269,10 +269,8 @@ def t_integracao_s3_para_s6_no_runner():
             # vazia e falhar em S0, não em S3.
             return dict(ctx.artefatos.get("S0") or {})
 
-    # S3 precisa dos documentos; S0 os fornece junto com a peça.
-    ctx.artefatos["S0"]["documentos"] = [
-        documento("sentenca", resultado="procedente",
-                  texto="Julgo procedente o pedido.")]
+    # `documentos` vem do S1Falso, não do S0: declarar nos dois colide de chave
+    # e o contrato recusa — comportamento correto.
 
     # S6 declara dependência de S4 (de onde vem a peça em produção). Dependência
     # declarada tem de existir no DAG, senão o runner levanta DAGInvalido. O
@@ -285,7 +283,25 @@ def t_integracao_s3_para_s6_no_runner():
     s4._carregar_dominio = lambda d: {"modelos": {"default": {
         "provider": "local", "modelo": "m", "motivo": "teste"}}}
 
-    res = Runner([S0Falso(), S3Estrategia(), s4, S6Gates()], ctx).rodar()
+
+    class S1Falso(Stage):
+        """S1 mínimo: `documentos` nasce no S1, não no S0.
+
+        S3 declara `depende_de = ["S0", "S1"]` porque é o S1 que produz os
+        documentos tipados. Sem S1 no DAG de teste, o runner recusa o grafo
+        por dependência inexistente — comportamento correto, não defeito.
+        """
+        id = "S1"
+        nome = "conversao-de-teste"
+        depende_de = ["S0"]  # type: ignore[assignment]
+        entrada_obriga = []  # type: ignore[assignment]
+        saida_obriga = ["documentos"]  # type: ignore[assignment]
+
+        def executar(self, ctx):
+            return {"documentos": [documento("sentenca", resultado="procedente",
+                                             texto="Julgo procedente o pedido.")]}
+
+    res = Runner([S0Falso(), S1Falso(), S3Estrategia(), s4, S6Gates()], ctx).rodar()
     assert res["parada"] == "fim", f"parada={res['parada']} em {res['estagio']}"
     gates = ctx.artefatos["S6"]["gates"]
     assert gates["peca"] == "apelacao", gates["peca"]

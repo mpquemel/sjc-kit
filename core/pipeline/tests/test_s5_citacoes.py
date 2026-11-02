@@ -288,7 +288,7 @@ def t_integracao_s3_para_s5_no_runner():
         nome = "entrada-de-teste"
         depende_de = []  # type: ignore[assignment]
         entrada_obriga = []  # type: ignore[assignment]
-        saida_obriga = ["caso_id", "dominio_id", "documentos", "polo_atuacao",
+        saida_obriga = ["caso_id", "dominio_id", "polo_atuacao",
                         "peca_texto"]  # type: ignore[assignment]
 
         def executar(self, ctx):
@@ -300,8 +300,6 @@ def t_integracao_s3_para_s5_no_runner():
         "polo_atuacao": "ativo",
         "peca_texto": PECA,
         "consulta_fonte": False,
-        "documentos": [documento("sentenca", resultado="procedente",
-                                 texto="Julgo procedente.")],
     }
     # S5 declara dependência de S4 (de onde vem a peça). Dependência declarada
     # tem de existir no DAG, então o teste inclui S4 — e S4 pausa por modelo
@@ -314,7 +312,25 @@ def t_integracao_s3_para_s5_no_runner():
     s4._carregar_dominio = lambda d: {"modelos": {"default": {
         "provider": "local", "modelo": "m", "motivo": "teste"}}}
 
-    res = Runner([S0Falso(), S3Estrategia(), s4, S5Citacoes()], ctx).rodar()
+
+    class S1Falso(Stage):
+        """S1 mínimo: `documentos` nasce no S1, não no S0.
+
+        S3 declara `depende_de = ["S0", "S1"]` porque é o S1 que produz os
+        documentos tipados. Sem S1 no DAG de teste, o runner recusa o grafo
+        por dependência inexistente — comportamento correto, não defeito.
+        """
+        id = "S1"
+        nome = "conversao-de-teste"
+        depende_de = ["S0"]  # type: ignore[assignment]
+        entrada_obriga = []  # type: ignore[assignment]
+        saida_obriga = ["documentos"]  # type: ignore[assignment]
+
+        def executar(self, ctx):
+            return {"documentos": [documento("sentenca", resultado="procedente",
+                                             texto="Julgo procedente o pedido.")]}
+
+    res = Runner([S0Falso(), S1Falso(), S3Estrategia(), s4, S5Citacoes()], ctx).rodar()
     assert res["parada"] == "fim", f"parada={res['parada']} em {res['estagio']}"
     assert "citacoes" in ctx.artefatos["S5"], "S5 não registrou citação"
     assert ctx.artefatos["S5"]["citacoes"]["retem"] is True

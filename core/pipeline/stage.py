@@ -266,6 +266,9 @@ class PipelineContext:
     artefato versionado, não por chamada direta — senão o DAG é decorativo.
     """
 
+    # Nome do arquivo de entrada do caso, procurado dentro de `pasta_caso`.
+    ARQUIVO_ENTRADA = "caso.json"
+
     def __init__(self, pasta_caso: Path, dominio_id: str = ""):
         self.pasta = Path(pasta_caso)
         self.dominio_id = dominio_id
@@ -276,6 +279,58 @@ class PipelineContext:
             "iniciado_em": datetime.now(timezone.utc).isoformat(),
             "estagios": [],
         }
+        self.entrada_do_caso: Dict[str, Any] = {}
+
+    def carregar_entrada_do_caso(self) -> Dict[str, Any]:
+        """
+        Lê `caso.json` da pasta do caso e devolve as entradas declaradas.
+
+        Sem isto, `artefatos["S0"]` nunca é populado fora dos testes: cada
+        estágio injetava o artefato à mão, e o pipeline jamais rodou a partir
+        de uma pasta em disco. A ausência era invisível porque os 194 testes
+        montavam o contexto manualmente.
+
+        Contrato do arquivo (todos os campos, exceto os marcados opcionais):
+            caso_id        — número CNJ com DV válido
+            pdf_path       — relativo à pasta do caso, ou absoluto
+            arvore_path    — opcional; caminho do arquivo de árvore
+            perfil_atuacao — polo do operador; NUNCA inferido
+            criado_em      — ISO-8601
+            criado_por     — quem declarou o polo
+
+        Caminho relativo é resolvido contra `pasta_caso`. Caminho absoluto é
+        respeitado — o operador pode apontar para PDF fora do caso.
+
+        Devolve o dicionário pronto para `artefatos["S0"]`. Arquivo ausente ou
+        ilegível NÃO levanta exceção aqui: devolve `{}` para que o S0 reporte
+        a falta campo a campo, em vez de estourar traceback antes do DAG.
+        """
+        arquivo = self.pasta / self.ARQUIVO_ENTRADA
+        if not arquivo.is_file():
+            self.entrada_do_caso = {}
+            return {}
+
+        try:
+            bruto = json.loads(arquivo.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            # Ilegível é ausência declarada: o S0 dirá qual campo falta.
+            self.entrada_do_caso = {}
+            return {}
+
+        if not isinstance(bruto, dict):
+            self.entrada_do_caso = {}
+            return {}
+
+        def _resolver(chave: str) -> None:
+            valor = bruto.get(chave)
+            if isinstance(valor, str) and valor and not Path(valor).is_absolute():
+                bruto[chave] = str((self.pasta / valor).resolve())
+
+        for chave in ("pdf_path", "arvore_path"):
+            _resolver(chave)
+
+        self.entrada_do_caso = bruto
+        return dict(bruto)
 
     def montar_entrada(self, stage: Stage) -> Dict[str, Any]:
         """
@@ -297,8 +352,12 @@ class PipelineContext:
                         [f"chave '{k}' definida por dois estágios e o "
                          f"estágio não declarou precedência"])
                 entrada[k] = v
-        # Entradas de S0 (caso) estão disponíveis a todos, com precedência
-        # menor: um estágio pode sobrescrever `caso_id`, não o contrário.
+        # Entradas do caso (caso.json) e o artefato de S0 estão disponíveis a
+        # todos, com precedência menor: um estágio pode sobrescrever `caso_id`,
+        # não o contrário. A ordem importa — o caso.json é a fonte primária
+        # para o PRÓPRIO S0, que ainda não tem artefato quando executa.
+        for k, v in self.entrada_do_caso.items():
+            entrada.setdefault(k, v)
         for k, v in self.artefatos.get("S0", {}).items():
             entrada.setdefault(k, v)
         return entrada

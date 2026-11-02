@@ -374,19 +374,37 @@ def t_s3_no_runner_registra_saida():
         nome = "entrada-de-teste"
         depende_de = []  # type: ignore[assignment]
         entrada_obriga = []  # type: ignore[assignment]
-        saida_obriga = ["caso_id", "dominio_id", "documentos", "polo_atuacao"]  # type: ignore[assignment]
+        # `documentos` NÃO está aqui: nasce no S1, como no pipeline real.
+        # Deixá-lo no S0 e também no S1 stub colide de chave e o contrato
+        # recusa — que é o comportamento correto.
+        saida_obriga = ["caso_id", "dominio_id", "polo_atuacao"]  # type: ignore[assignment]
         # polo nulo é informação legítima, não ausência: o contrato manda
         # tratar como 'indefinido' e forçar revisão humana.
         campos_podem_ser_nulos = ["polo_atuacao"]  # type: ignore[assignment]
 
         def executar(self, ctx):
             return {"caso_id": "00000000000000000000", "dominio_id": "familia",
-                    "documentos": [documento("sentenca", resultado="procedente")],
                     "polo_atuacao": None}
+
+    class S1(Stage):
+        """S1 mínimo: só republica `documentos`, como o S1 real faz.
+
+        S3 declara `depende_de = ["S0", "S1"]` porque `documentos` nasce no
+        S1, não no S0. Sem este estágio no DAG de teste, o runner recusaria o
+        grafo por dependência inexistente — que é o comportamento correto.
+        """
+        id = "S1"
+        nome = "conversao-de-teste"
+        depende_de = ["S0"]  # type: ignore[assignment]
+        entrada_obriga = []  # type: ignore[assignment]
+        saida_obriga = ["documentos"]  # type: ignore[assignment]
+
+        def executar(self, ctx):
+            return {"documentos": [documento("sentenca", resultado="procedente")]}
 
     import tempfile
     ctx = PipelineContext(Path(tempfile.mkdtemp(prefix="sjc-int-")), "familia")
-    res = Runner([S0(), S3Estrategia()], ctx).rodar()
+    res = Runner([S0(), S1(), S3Estrategia()], ctx).rodar()
     assert res["parada"] == "fim", f"parada={res['parada']} em {res['estagio']}"
     saidas = [e for e in ctx.manifesto["estagios"] if e["evento"] == "saida"]
     assert any(s["estagio"] == "S3" for s in saidas), "S3 não registrou saída"

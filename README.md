@@ -33,16 +33,18 @@ Medido em 02/11/2026, no commit que acompanha este README:
 
 ```
 estágios implementados   S0 S1 S2 S3 S4 S5 S6 S7 S8   (9, nenhum faltando)
-testes                    194, em 13 suítes
+testes                    205, em 15 suítes
 suítes                    todas verdes
 casos adversariais        11 (6 família, 5 penal) — todos recusados como exigido
 domínios                 família (operacional parcial), penal (esqueleto), _template
 regras de gate, família   6 declaradas, 3 executáveis por programa
 páginas de PDF medidas    32 — 29 reconhecidas úteis, 3 recusadas (1 escaneada, 2 rodapés)
+execução ponta a ponta    `make demo` — para em S3 declarando a lacuna real
+fronteira core→domínios   verificada por `core/tests/test_fronteira.py` (ast, stdlib)
 ```
 
 Este bloco existe para que ninguém precise acreditar na palavra do README: ele
-pode ser reconferido com `make verify` e `make adversariais`.
+pode ser reconferido com `make verify`, `make adversariais` e `make demo`.
 
 ---
 
@@ -81,10 +83,23 @@ produzem a saída esperada. Não significa que ele saiba jurídico. A diferença
 instalação correta e peça correta é a diferença entre um carro que liga e um carro
 que chega.
 
-**Falha conhecida:** `make demo` existe, mas **não processa nada** enquanto
-`casos/_exemplo/` não existir. O alvo falha com código 2 e diz por quê, em vez de
-fingir que rodou. Um caso sintético versionado ainda precisa ser escrito — sem
-dado de cliente, por definição.
+`make demo` roda o caso sintético versionado em `casos/_exemplo/` — PDF de duas
+páginas, `arvore.txt` e `caso.json` com CNJ de DV calculado. Ele **executa de
+verdade** até onde o núcleo chega hoje, e para onde o núcleo não chega, diz por
+quê:
+
+```
+S0 OK   S1 OK   S2 OK   S3 PAUSA
+motivo: o catálogo exige tipo_documento [decisao_interlocutoria, sentenca],
+        e os documentos chegam como [pagina_de_autos].
+        Falta o classificador de tipo documental (não implementado).
+```
+
+A pausa em S3 é o estado real do produto, não um defeito da fixture. O S1 extrai
+texto com proveniência por página; o que ainda não existe é o estágio que
+classifica a página em **tipo documental**. Enquanto ele não existir, todo
+gatilho que exige `tipo_documento` fica sem casa — e o kit diz isso com a causa,
+em vez de sugerir que o operador errou o catálogo.
 
 ---
 
@@ -160,12 +175,22 @@ opcionais, isolados em `core/citacoes/` e frágeis por natureza.
 A seta é sempre `dominios → core`. Se `core/` precisar saber que existe
 "família", a fronteira está errada.
 
-**A fronteira hoje é verificada por disciplina, não por tooling.** Não há
-`import-linter` nem contrato automatizado de dependência: o detector de
-acoplamento é o domínio `penal`, que existe vazio e declarado. Se configurá-lo
-exigir código novo em `core/`, o acoplamento apareceu onde não devia. Um contrato
-de importação automatizado está na lista de trabalho, não no disco — e esta
-frase existe para que ninguém presuma o contrário.
+**A fronteira é verificada por código.** `core/tests/test_fronteira.py` percorre
+todo `core/` com `ast` e reprova: import estático de `dominios/`, import
+dinâmico (`importlib`, `__import__`), e qualquer caminho literal para um domínio
+específico. Caminho **parametrizado** (`RAIZ / "dominios" / dominio`) é o
+contrato e passa — o núcleo sabe que existe uma pasta de domínios, não qual
+delas usar. O teste tem meta-teste: injeta uma violação de propósito e exige que
+o detector a encontre.
+
+Sem `import-linter`. A biblioteca resolveria o mesmo problema ao custo de uma
+dependência a instalar em cada máquina do escritório; `ast` é stdlib e o teste
+inteiro cabe em uma tela.
+
+O detector de acoplamento continua existindo por outro motivo: `dominios/penal/`
+está vazio e declarado. Se configurá-lo exigir código novo em `core/`, a
+generalidade era marketing. O teste de fronteira pega import; não pega schema que
+rejeite um campo novo — e essa é a parte que só o domínio novo revela.
 
 O núcleo funciona com **PDF + árvore em mão**. Nenhum sistema de tribunal é
 pré-requisito, e nenhum é citado como dependência.

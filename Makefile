@@ -27,7 +27,9 @@ SUITES = \
 	core/pipeline/tests/test_s5_citacoes.py \
 	core/pipeline/tests/test_s6_gates.py \
 	core/pipeline/tests/test_s7_gate_cinco_camadas.py \
-	core/pipeline/tests/test_s8_entrega.py
+	core/pipeline/tests/test_s8_entrega.py \
+	core/pipeline/tests/test_cnj.py \
+	core/tests/test_fronteira.py
 
 DOMINIOS_DECLARADOS = dominios/familia dominios/penal dominios/_template
 

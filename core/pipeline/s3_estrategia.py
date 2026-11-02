@@ -71,7 +71,11 @@ def _limpar_marca_conferir(base: str) -> str:
 class S3Estrategia(Stage):
     id = "S3"
     nome = "estrategia"
-    depende_de = ["S0"]  # type: ignore[assignment]
+    # S1 fornece `documentos` (tipados, com página de origem). Declarar só S0
+    # fazia `montar_entrada` nunca trazer a lista, e o S3 respondia
+    # "documentos ausente" em 100% das execuções reais — os testes não viam
+    # porque montavam o artefato à mão.
+    depende_de = ["S0", "S1"]  # type: ignore[assignment]
     entrada_obriga = ["caso_id", "dominio_id", "documentos"]  # type: ignore[assignment]
     saida_obriga = ["caso_id", "estrategia"]  # type: ignore[assignment]
 
@@ -128,13 +132,36 @@ class S3Estrategia(Stage):
         casadas = self._casar_regras(catalogo.get("regras") or [], docs)
 
         if not casadas:
+            # DIAGNÓSTICO, NÃO DESISTÊNCIA. A causa mais comum de "nenhuma
+            # regra casou" não é catálogo pobre: é que todo gatilho do catálogo
+            # exige `tipo_documento`, e o S1 emite `pagina_de_autos` — nenhum
+            # documento é classificado como "sentenca" ou
+            # "decisao_interlocutoria". Sem classificador de tipo documental,
+            # essas regras NUNCA casam. Dizer isso é diferente de dizer
+            # "declare o gatilho": o operador já declarou, e o que falta é o
+            # estágio que produz o tipo.
+            tipos_emitidos = sorted({
+                str(d.get("tipo")) for d in docs if isinstance(d, dict)})
+            tipos_exigidos = sorted({
+                str((r.get("gatilho") or {}).get("tipo_documento"))
+                for r in (catalogo.get("regras") or [])
+                if isinstance(r, dict)
+                and (r.get("gatilho") or {}).get("tipo_documento")})
+            bloqueio = ""
+            if tipos_exigidos and not (set(tipos_exigidos) & set(tipos_emitidos)):
+                bloqueio = (
+                    f" CAUSA: o catálogo exige tipo_documento "
+                    f"{tipos_exigidos}, e os documentos chegam como "
+                    f"{tipos_emitidos}. Falta o classificador de tipo "
+                    f"documental (não implementado) — não é defeito do "
+                    f"gatilho declarado.")
             raise EstagioAbortado(
                 self.id,
                 f"nenhuma regra do catálogo de '{dominio}' casou com os "
-                f"{len(docs)} documento(s) do caso. O fallback para modelo "
-                f"não está implementado",
-                "declare o gatilho no estrategia.yaml do domínio, ou aguarde o "
-                "fallback de S3 (previsto, não implementado)",
+                f"{len(docs)} documento(s) do caso.{bloqueio} O fallback para "
+                f"modelo não está implementado",
+                "classifique o tipo documental no domínio (ou declare gatilho "
+                "sem tipo_documento, quando a distinção não for necessária)",
             )
 
         escolhida = casadas[0]

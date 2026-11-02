@@ -1,9 +1,17 @@
 # Artefatos de trabalho — NUNCA versionar.
 # Este repositório é público: o que está aqui pode ser lido por qualquer pessoa.
 
-# Dados de caso (peça, processo, cliente) — vazamento, não higiene
-casos/
+# Dados de caso (peça, processo, cliente) — vazamento, não higiene.
+# `casos/` é ignorado INTEIRO, exceto o exemplo sintético: o kit precisa de
+# um caso versionado para que `make demo` processe algo. O exemplo não
+# contém dado de cliente por construção — se contiver, é defeito.
+casos/*
+!casos/_exemplo/
+!casos/_exemplo/**
+# Manifesto de execucao: gerado a cada rodada, nao e dado do exemplo.
+casos/_exemplo/manifesto.json
 *.pdf
+!casos/_exemplo/*.pdf
 
 # Pareceres internos de agentes: opinião de apoio, não documentação do kit
 PARECER-*.md
