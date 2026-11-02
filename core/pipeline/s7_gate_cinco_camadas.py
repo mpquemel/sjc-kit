@@ -98,9 +98,12 @@ class S7GateCincoCamadas(Stage):
 
     id = "S7"
     nome = "gate-cinco-camadas"
-    depende_de = ["S3", "S6"]  # type: ignore[assignment]
-    # peca_texto vem de S4, que não pode estar em depende_de (republica campos
-    # de S0 e o runner trata colisão como defeito de contrato). Lido direto.
+    depende_de = ["S6"]  # type: ignore[assignment]
+    # S3 NÃO entra em `depende_de`: S3 e S6 publicam `caso_id`, e o runner trata
+    # colisão de chave como defeito de contrato — corretamente. S6 já depende de
+    # S3, então a ordem topológica continua garantida, e `estrategia` é lida
+    # direto de `ctx.artefatos["S3"]`.
+    # O mesmo vale para `peca_texto`, que vem de S4 (republica campos de S0).
     entrada_obriga = ["caso_id"]  # type: ignore[assignment]
     saida_obriga = ["caso_id", "gate_cinco_camadas"]  # type: ignore[assignment]
 
@@ -121,7 +124,8 @@ class S7GateCincoCamadas(Stage):
             )
 
         gates = entrada.get("gates") or {}
-        estrategia = entrada.get("estrategia") or {}
+        estrategia = ((ctx.artefatos.get("S3") or {}).get("estrategia")
+                      or entrada.get("estrategia") or {})
         # Declarações de G1/G2. `montar_entrada` só entrega chaves dos estágios
         # em `depende_de`; nenhum deles produz `declaracoes`. Fonte única
         # declarada: artefato próprio `declaracoes_operador`, escrito pelo

@@ -57,6 +57,16 @@ modelos:
     provider: a preencher
     modelo: a preencher
     motivo: "a preencher — escolha do escritório, com rastro de custo/qualidade"
+  # Modelo de DEMONSTRAÇÃO, só para `make demo` provar o fluxo até S8.
+  # Não é recomendação de escritório: `local/nenhum` não gera texto jurídico —
+  # devolve marcador estrutural, e o S5 retém a peça por vacuidade de citação.
+  # Em produção o escritório declara aqui o modelo que paga, com motivo.
+  por_peca:
+    impugnacao-cumprimento:
+      provider: local
+      modelo: nenhum
+      motivo: "demo sintética do kit: prova o encanamento até S8, não a peça"
+      verificado_em: "2026-11-02"
 
 template_base: "../_template/templates/peca.md"
 

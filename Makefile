@@ -131,7 +131,7 @@ demo:
 		echo "  em vez de fingir que rodou."; \
 		exit 2; \
 	fi
-	@$(PYTHON) -m core.pipeline.runner casos/_exemplo --dominio $${DOMINIO:-familia}
+	@$(PYTHON) -m scripts.demo casos/_exemplo --dominio $${DOMINIO:-familia}
 
 # ---------------------------------------------------------------------------
 limites:

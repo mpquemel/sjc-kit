@@ -4,5 +4,6 @@
   "arvore_path": "arvore.txt",
   "perfil_atuacao": "polo_ativo",
   "criado_em": "2026-11-02T00:00:00-03:00",
-  "criado_por": "caso-exemplo sintetico do kit"
+  "criado_por": "caso-exemplo sintetico do kit",
+  "tipo_documento": "decisao_interlocutoria"
 }

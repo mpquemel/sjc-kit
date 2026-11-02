@@ -39,6 +39,12 @@ class S0Entrada(Stage):
     nome = "entrada"
     depende_de = []  # type: ignore[assignment]
     entrada_obriga = ["caso_id", "pdf_path", "dominio_id"]  # type: ignore[assignment]
+    # `tipo_documento` é OPCIONAL e declarado pelo operador. O kit não infere
+    # tipo documental: classificar "isto é sentença" por regex de palavra é o
+    # rigor de fachada que o projeto combate — um classificador errado manda
+    # apelação para o template de impugnação com aparência de método.
+    # Quando ausente, o S3 pausa e nomeia a lacuna. Quando presente, o S1 o
+    # aplica à página principal do PDF.
     saida_obriga = ["caso_id", "pdf_path", "arvore_path", "dominio_id",
                     "perfil_atuacao", "criado_em", "criado_por"]  # type: ignore[assignment]
 
@@ -76,6 +82,8 @@ class S0Entrada(Stage):
             "perfil_atuacao": e.get("perfil_atuacao"),
             "criado_em": e.get("criado_em"),
             "criado_por": e.get("criado_por"),
+            # Declaração do operador, não inferência. Ausente vira None.
+            "tipo_documento": e.get("tipo_documento"),
         }
 
 

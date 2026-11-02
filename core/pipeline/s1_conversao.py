@@ -151,6 +151,16 @@ class S1Conversao(Stage):
         entrada = ctx.montar_entrada(self)
         pdf_path = entrada.get("pdf_path")
 
+        # TIPO DOCUMENTAL DECLARADO, NUNCA INFERIDO.
+        # O operador informa em `caso.json` o tipo da página principal
+        # ("sentenca", "decisao_interlocutoria", ...). O kit NÃO classifica por
+        # regex de palavra: um classificador errado manda apelação para o
+        # template de impugnação, com aparência de método. Ausente é ausência —
+        # as páginas continuam como "pagina_de_autos" e o S3 nomeia a lacuna.
+        tipo_declarado = entrada.get("tipo_documento")
+        if not isinstance(tipo_declarado, str) or not tipo_declarado.strip():
+            tipo_declarado = None
+
         if pymupdf is None and self.abridor is None:
             raise ErroDeContrato(
                 self.id, "entrada",
@@ -214,7 +224,7 @@ class S1Conversao(Stage):
                 marcador = f"=== [p.{i + 1}] ==="
                 blocos_txt.append(f"{marcador}\n{texto.strip()}")
                 documentos.append({
-                    "tipo": "pagina_de_autos",
+                    "tipo": tipo_declarado or "pagina_de_autos",
                     "texto": texto.strip(),
                     "pagina": i + 1,
                     "metodo": metodo,
@@ -235,6 +245,8 @@ class S1Conversao(Stage):
             "paginas_uteis": total_uteis,
             "paginas_sem_texto": len(sem_texto),
             "ocr_habilitado": bool(self.ocr),
+            # De onde veio o tipo: declarado pelo operador ou ausente.
+            "tipo_documento_declarado": tipo_declarado,
             "criterio_triagem": {
                 "min_palavras": MIN_PALAVRAS,
                 "min_palavras_unicas": MIN_UNICAS,

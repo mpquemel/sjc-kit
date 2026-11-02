@@ -39,7 +39,7 @@ casos adversariais        11 (6 família, 5 penal) — todos recusados como exig
 domínios                 família (operacional parcial), penal (esqueleto), _template
 regras de gate, família   6 declaradas, 3 executáveis por programa
 páginas de PDF medidas    32 — 29 reconhecidas úteis, 3 recusadas (1 escaneada, 2 rodapés)
-execução ponta a ponta    `make demo` — para em S3 declarando a lacuna real
+execução ponta a ponta    `make demo` — S0 a S8, entrega bloqueada por G1/G2/G3/S6
 fronteira core→domínios   verificada por `core/tests/test_fronteira.py` (ast, stdlib)
 ```
 
@@ -84,22 +84,38 @@ instalação correta e peça correta é a diferença entre um carro que liga e u
 que chega.
 
 `make demo` roda o caso sintético versionado em `casos/_exemplo/` — PDF de duas
-páginas, `arvore.txt` e `caso.json` com CNJ de DV calculado. Ele **executa de
-verdade** até onde o núcleo chega hoje, e para onde o núcleo não chega, diz por
-quê:
+páginas, `arvore.txt` e `caso.json` com CNJ de DV calculado — **do S0 ao S8**:
 
 ```
-S0 OK   S1 OK   S2 OK   S3 PAUSA
-motivo: o catálogo exige tipo_documento [decisao_interlocutoria, sentenca],
-        e os documentos chegam como [pagina_de_autos].
-        Falta o classificador de tipo documental (não implementado).
+[OK  ] S0  [OK  ] S1  [OK  ] S2  [OK  ] S3  [OK  ] S4
+[OK  ] S5  [OK  ] S6  [OK  ] S7  [OK  ] S8        PARADA: fim em S8
 ```
 
-A pausa em S3 é o estado real do produto, não um defeito da fixture. O S1 extrai
-texto com proveniência por página; o que ainda não existe é o estágio que
-classifica a página em **tipo documental**. Enquanto ele não existir, todo
-gatilho que exige `tipo_documento` fica sem casa — e o kit diz isso com a causa,
-em vez de sugerir que o operador errou o catálogo.
+E termina do jeito que tem de terminar: **peça bloqueada**.
+
+```
+vereditos.md      veredito: REPROVA | pode protocolar: não
+camadas no pior veredito: G1, G2, G3, S6
+motivo G1: sem declaração explícita de conferência legal
+motivo G2: sem declaração explícita de conferência factual
+minuta.docx       existe, com o bloqueio escrito dentro
+```
+
+O pipeline atravessa inteiro e para antes da assinatura, porque as camadas que
+só o advogado pode declarar continuam não declaradas. Isso não é o demo
+falhando: é o demo provando o que o kit promete — **o erro fica visível antes da
+assinatura.**
+
+O provedor da demo é determinístico, sem modelo de linguagem e sem rede: devolve
+texto estrutural que se declara não jurídico em cada bloco. Ele prova o
+transporte de dados, não o conteúdo. Trocar por modelo real é uma linha em
+`dominio.yaml`, sob custo e responsabilidade do escritório.
+
+**O tipo documental é declarado, não inferido.** `caso.json` traz
+`tipo_documento`, e o S1 o aplica às páginas com texto. O kit não classifica
+"isto é sentença" por regex de palavra: um classificador errado manda apelação
+para o template de impugnação, com aparência de método. Ausente a declaração, o
+S3 pausa e nomeia a lacuna.
 
 ---
 
