@@ -4,21 +4,38 @@
   "title": "Vocabulário institucional proibido no núcleo",
   "description": "Fonte única da lista negra. Decisão 5 da especificação: nenhum nome de campo, arquivo, variável ou estágio do núcleo pode conter termo de área jurídica ou de instituição. A seta é sempre dominios -> core; vocabulário de uma instituição é vazamento de arquitetura, não detalhe de estilo.",
   "type": "object",
-  "required": ["termos_proibidos", "substitutos", "escopo"],
+  "required": [
+    "termos_proibidos",
+    "substitutos",
+    "escopo"
+  ],
   "properties": {
     "termos_proibidos": {
       "type": "array",
-      "items": {"type": "string"},
+      "items": {
+        "type": "string"
+      },
       "description": "Termos que não podem aparecer em core/ nem em dominios/."
     },
     "substitutos": {
       "type": "object",
-      "additionalProperties": {"type": "string"},
+      "additionalProperties": {
+        "type": "string"
+      },
       "description": "Termo proibido -> termo genérico equivalente. Serve ao operador na migração."
     },
     "escopo": {
       "type": "array",
-      "items": {"type": "string", "enum": ["core", "dominios", "adaptadores", "acervo", "cli"]},
+      "items": {
+        "type": "string",
+        "enum": [
+          "core",
+          "dominios",
+          "adaptadores",
+          "acervo",
+          "cli"
+        ]
+      },
       "description": "Onde a regra vale. A lista negra não se aplica a este próprio arquivo."
     },
     "excecoes": {
@@ -26,10 +43,17 @@
       "description": "Arquivos onde citar o termo é legítimo (documentação da própria regra). Cada exceção declara o motivo.",
       "items": {
         "type": "object",
-        "required": ["caminho", "motivo"],
+        "required": [
+          "caminho",
+          "motivo"
+        ],
         "properties": {
-          "caminho": {"type": "string"},
-          "motivo": {"type": "string"}
+          "caminho": {
+            "type": "string"
+          },
+          "motivo": {
+            "type": "string"
+          }
         }
       }
     }

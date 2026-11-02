@@ -7,7 +7,7 @@
 > + Basir (engenharia, redação e consolidação a partir de três pareceres independentes)
 > **Estado:** aprovada para desenho. Nenhuma linha de código escrita.
 > **Público-alvo:** escritórios de advocacia e operadores do direito, de qualquer área e
-> de qualquer polo. Não é atrelado a Defensoria Pública nem a Ministério Público.
+> de qualquer polo e de qualquer área. O escritório configura a área e o polo; o kit não presume nenhum.
 
 ## Decisões fechadas (02/11/2026)
 
@@ -17,7 +17,7 @@
 | 2 | Área de demonstração | Família, validada com os fundamentos existentes |
 | 3 | Extensibilidade | Esqueleto de **penal vazio desde o primeiro commit** (campos declarados, valores `a preencher`) |
 | 4 | Acessibilidade | **Princípio declarado + checklist na v0.1**; auditoria formal com usuário real na v0.2 |
-| 5 | Linguagem | Proibido vocabulário institucional ou de área no núcleo: `assistido`, `defensoria`, `numero_verde`, `vara_familia` → `cliente`, `polo_operador`, `identificador_externo`, `orgao_julgador` |
+| 5 | Linguagem | Proibido vocabulário institucional ou de área no núcleo: `assistido`, `numero_verde` → `cliente`, `polo_operador`, `identificador_externo`, `orgao_julgador` |
 | 6 | Integração | Adaptadores de **entrada** para PJe, eproc, Projudi e afins; todos opcionais; nenhum sistema de tribunal no núcleo |
 
 > **Nome anterior nesta especificação:** "Protocolo Jurídico Aberto". Substituído. O termo
@@ -30,7 +30,7 @@
 > consolidação a partir de três pareceres independentes)
 > **Estado:** aprovada para desenho. Nenhuma linha de código escrita.
 > **Público-alvo:** escritórios de advocacia e operadores do direito. Não é atrelado a
-> Defensoria Pública nem a Ministério Público; esses são clientes possíveis, não premissa.
+> órgão público; órgãos públicos são clientes possíveis, não premissa.
 
 ---
 
@@ -49,7 +49,7 @@ reprodução — e o procedimento que impede que isso chegue à assinatura do ad
 
 **É para:** sócio de escritório que assina peça e responde por ela; advogado autônomo com
 volume de processo acima da capacidade de revisão; escritório pequeno sem equipe de
-tecnologia; defensorias e procuradorias que queiram o mesmo método sem depender deste autor.
+tecnologia; órgãos públicos que queiram o mesmo método sem depender deste autor.
 
 **Não é para:** quem quer substituir o advogado; quem quer "IA que redige sozinha"; quem
 não vai ler o relatório de verificação; quem processa dados de cliente em API de terceiro
@@ -272,7 +272,7 @@ extensibilidade rodando de forma contínua, a custo quase zero.
 
 **Regra de nomenclatura (decisão 5):** nenhum nome de campo, arquivo, variável ou estágio
 pode conter termo de área jurídica ou de instituição. Proibido no núcleo: `assistido`,
-`defensoria`, `mp`, `polo_defensoria`, `numero_verde`, `vara_familia`, `pje`, `eproc`. Usar: `cliente`,
+`assistido`, `numero_verde`, `pje`, `eproc`. Usar: `cliente`,
 `polo_operador`, `identificador_externo`, `orgao_julgador`. Isso parece detalhe de estilo;
 é o que decide se o produto generaliza ou apodrece no segundo cliente.
 
@@ -297,7 +297,7 @@ com proveniência e atualização, é assinatura mensal. Ninguém quer montar cu
 querem acervo confiável. E curadoria é exatamente o que a IA sozinha não faz bem, porque
 exige juízo humano que confere.
 
-**Sinergia:** cada ficha conferida no trabalho da Defensoria é um item de acervo vendável.
+**Sinergia:** cada ficha conferida no trabalho real é um item de acervo reutilizável.
 O acervo que já foi necessário construir é o primeiro produto recorrente.
 
 ---

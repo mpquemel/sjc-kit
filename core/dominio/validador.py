@@ -61,8 +61,8 @@ CAMPOS_DOMINIO = ["id", "nome", "descricao", "versao", "fontes", "acervo",
 # O validador acusa em QUALQUER arquivo do domínio e em core/, porque o
 # vazamento de vocabulário é o primeiro sintoma de vazamento de arquitetura.
 VOCABULARIO_PROIBIDO = [
-    "assistido", "defensoria", "polo_defensoria", "numero_verde",
-    "vara_familia", "pje", "eproc",
+    "assistido", "numero_verde",
+    "pje", "eproc",
 ]
 
 

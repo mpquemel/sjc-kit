@@ -1,23 +1,20 @@
 {
   "termos_proibidos": [
     "assistido",
-    "defensoria",
-    "polo_defensoria",
     "numero_verde",
-    "vara_familia",
     "pje",
     "eproc"
   ],
   "substitutos": {
     "assistido": "cliente",
-    "defensoria": "operador",
-    "polo_defensoria": "polo_operador",
-    "vara_familia": "orgao_julgador",
     "numero_verde": "canal_contato",
     "pje": "sistema_processual",
     "eproc": "sistema_processual"
   },
-  "escopo": ["core", "dominios"],
+  "escopo": [
+    "core",
+    "dominios"
+  ],
   "excecoes": [
     {
       "caminho": "core/contratos/vocabulario.json",

@@ -50,15 +50,15 @@ pode ser reconferido com `make verify` e `make adversariais`.
 
 **É para:** sócio de escritório que assina peça e responde por ela; advogado
 autônomo com volume acima da capacidade de revisão; escritório pequeno sem equipe
-de tecnologia; defensorias e procuradorias que queiram o mesmo método sem
+de tecnologia; órgãos públicos que queiram o mesmo método sem
 depender deste autor.
 
 **Não é para:** quem quer substituir o advogado; quem quer "IA que redige
 sozinha"; quem não vai ler o relatório de verificação; quem processa dados de
 cliente em API de terceiro sem base legal.
 
-Não é atrelado a Defensoria Pública nem a Ministério Público. Esses são usuários
-possíveis, não premissa.
+Não é atrelado a órgão público nenhum. Órgãos públicos são usuários possíveis,
+não premissa.
 
 ---
 

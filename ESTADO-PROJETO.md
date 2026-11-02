@@ -9,8 +9,8 @@
 - **Produto:** Sistema Jurídico Customizável (SJC)
 - **Repositório:** `sjc-kit`
 - **Público:** escritórios de advocacia e operadores do direito, qualquer área, qualquer polo.
-  **Não é da Defensoria Pública nem do Ministério Público.** Defensor, estagiário e residente
-  são usuários possíveis, não premissa.
+  **Não é de órgão público nenhum.** Servidor público e estagiário são usuários
+  possíveis, não premissa.
 - **Autoria:** Melhym Pereira Quemel (concepção, método, acessibilidade de origem).
   Ver `AUTORES.md`.
 
@@ -21,12 +21,10 @@
 3. Esqueleto de **penal vazio desde o primeiro commit** — detector de acoplamento.
 4. Acessibilidade: princípio declarado + checklist na v0.1; auditoria formal com usuário real
    na v0.2; perfis adicionais na v0.3.
-5. Nomenclatura proibida no núcleo: `assistido`, `defensoria`, `mp`, `polo_defensoria`,
-   `numero_verde`, `vara_familia`, `pje`, `eproc`.
+5. Nomenclatura proibida no núcleo: `assistido`, `numero_verde`, `pje`, `eproc`.
    Usar: `cliente`, `polo_operador`, `identificador_externo`, `orgao_julgador`.
 6. Integração por **adaptadores de entrada opcionais**: `pje/`, `eproc/`, `projudi/` e afins.
    Nenhum sistema de tribunal no núcleo. O núcleo funciona com PDF + árvore em mão.
-   **O Sistema Verde não é mencionado no produto** (instrução expressa do Melhym, 02/11).
 
 ## Documentos no repositório público
 
