@@ -2,7 +2,7 @@
 
 > Ponto de retomada. Se a conversa for reiniciada, leia este arquivo primeiro, depois
 > `ESPECIFICACAO-PRODUTO.md` e `LIMITES.md`.
-> Última atualização: 02/11/2026, 12:15 (BRT)
+> Última atualização: 02/11/2026, 15:50 (BRT)
 
 ## Identidade
 
@@ -11,7 +11,8 @@
 - **Público:** escritórios de advocacia e operadores do direito, qualquer área, qualquer polo.
   **Não é da Defensoria Pública nem do Ministério Público.** Defensor, estagiário e residente
   são usuários possíveis, não premissa.
-- **Autoria:** Melhym Pereira Quemel (concepção, método, acessibilidade de origem) + Basir.
+- **Autoria:** Melhym Pereira Quemel (concepção, método, acessibilidade de origem).
+  Ver `AUTORES.md`.
 
 ## Decisões fechadas
 
@@ -27,37 +28,50 @@
    Nenhum sistema de tribunal no núcleo. O núcleo funciona com PDF + árvore em mão.
    **O Sistema Verde não é mencionado no produto** (instrução expressa do Melhym, 02/11).
 
-## Documentos escritos e aprovados
+## Documentos no repositório público
 
 | Arquivo | Estado |
 |---|---|
-| `ESPECIFICACAO-PRODUTO.md` | v0.2, aprovada; 416+ linhas; decisões, fluxo S0–S8, árvore proposta |
+| `ESPECIFICACAO-PRODUTO.md` | v0.2, aprovada; decisões, fluxo S0–S8, árvore proposta |
 | `LIMITES.md` | escrito e **aprovado por Melhym em 02/11** |
-| `PARECER-1-ARQUITETO.md` | 1.027 linhas |
-| `PARECER-2-JURISTA.md` | 504 linhas |
-| `PARECER-3-CRITICO.md` | 150 linhas |
+| `METODO.md` | escrito |
+| `README.md` | reescrito em 02/11 contra o código; números reconferidos |
+| `AUTORES.md` | autoria, titulação e contato |
+| `GUIA-DOMINIO.md` | procedimento de domínio novo, com as armadilhas medidas |
 
-Backups: `ESPECIFICACAO-PRODUTO.md.bak-20261102-1145`, `.bak-20261102-1155`.
+Fora do repositório público, por decisão: pareceres internos de agentes
+(`PARECER-1..3`), backups e anotações de trabalho. Permanecem no diretório
+privado de origem.
 
-## Próximo passo — bloqueado apenas por decisão de onde escrever
+## Implementação — estado em 02/11/2026
 
-**Escrever `METODO.md`** — camada 1, produto de entrada gratuito. Explica *como se faz* e
-*por que cada escolha foi tomada*, com os números reais (119/121 do polo; modelo auditor que
-aprovou 11/11; 10 peças com citação furada em 136; filtro de UF que lia o espelho errado).
-Regra: limite sem número não entra.
+| Item | Estado |
+|---|---|
+| Pipeline S0–S8 | **completo**, registrado em `core/pipeline/stages.py` |
+| Testes | 194 em 13 suítes, todas verdes |
+| Casos adversariais | 11 (6 família, 5 penal), todos recusados como exigido |
+| Domínio família | `operacional_parcial`; 22 pendências declaradas |
+| Domínio penal | esqueleto declarado, 22 pendências; detector de acoplamento |
+| Regras de gate, família | 6 declaradas, **3 executáveis** por programa |
+| `make demo` | alvo existe, **não processa**: falta `casos/_exemplo/` |
+| Contrato de dependência (`import-linter`) | **não existe** — pendente |
+| Portão de citação | funcional fora de rede; adaptador de fonte é opcional |
 
-Depois dele, nesta ordem:
-1. `README.md` (humano) e `AGENT.md` (agente, com autoavaliação de pré-requisitos).
-2. Portão de citação (`core/`) com as 10 peças furadas como fixtures de aceitação.
-3. Fechar as 16 citações em aberto.
-4. Etapa 0 sem código: passo de acompanhamento das 77 peças entregues e não protocoladas.
+## Próximos passos, em ordem
+
+1. **Fixtures de caso sintético** (`casos/_exemplo/`) para destravar `make demo`.
+2. **Contrato automatizado de dependência** — hoje a fronteira é verificada por
+   disciplina e pelo detector penal.
+3. **Avaliadores para as 3 regras de gate restantes** de família, ou rebaixá-las
+   a prosa declarada no catálogo.
+4. Fechar as pendências declaradas de família e penal (22 + 22).
+5. Etapa 0 sem código: acompanhamento de peças entregues e não protocoladas.
 
 ## Pendências abertas
 
 - 16 citações em aberto a fechar.
-- Catálogo de decisão de peça em YAML para família (a partir dos gatilhos do PARECER-2).
 - Lastro por trecho (`chunk_id`) na doutrina de família + cabeçalho de proveniência SHA-256.
-- Árvore de diretórios apresentada ao Melhym — **aguardando aprovação formal** antes de código.
+- Coletores de fonte (`SJC_FONTES`) — opcionais, frágeis, fora do kit.
 
 ## Regras de operação que não mudam
 
