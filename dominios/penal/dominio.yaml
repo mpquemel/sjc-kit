@@ -1,0 +1,69 @@
+# =============================================================================
+# DOMÍNIO PENAL — ESQUELETO DECLARADO, NÃO IMPLEMENTADO.
+#
+# Este arquivo existe por um motivo único e explícito: ser o DETECTOR DE
+# ACOPLAMENTO do núcleo. Ver ESPECIFICACAO-PRODUTO.md §6.
+#
+# A tese que ele testa, continuamente e a custo quase zero:
+#   "Se configurar um domínio novo exigir tocar em core/, a generalidade do
+#    produto é marketing."
+#
+# Consequência prática: este domínio NÃO roda. `sjp validar-dominio --dominio
+# penal` deve APROVAR os campos presentes e MARCAR os `a preencher`. Rodar o
+# pipeline em penal deve RECUSAR por campo não decidido — não por erro de
+# código. Se recusar por KeyError, ImportError ou schema que não aceita o
+# campo, o acoplamento apareceu e o defeito está em core/, não aqui.
+#
+# Por que penal e não trabalhista: o criminalista quebra mais premissas do
+# que qualquer outra área. Prazo corre em dias corridos em parte dos recursos,
+# o catálogo de peça é outro, habeas corpus não tem prazo, e a dosimetria é o
+# campo onde mais se mente em citação — três frases, três premissas do núcleo
+# sob tensão.
+# =============================================================================
+
+id: penal
+nome: "Direito Penal e Processo Penal"
+descricao: "a preencher — defesa criminal, recursos, habeas corpus, execução"
+versao: "0.0.0"
+estado: esqueleto            # esqueleto | em_construcao | operacional
+
+polos_usuais:
+  - polo_operador            # a preencher: defesa e/ou acusação neste domínio
+  - polo_adverso
+
+# --- Fontes: declaradas, nenhuma verificada neste esqueleto -------------------
+# stj e stf existem como skill; planalto existiria como adaptador de legislação.
+# O adaptador `tjrj` e os demais tribunais estaduais ficam de fora até haver
+# consumidor real. Fonte declarada e não implementada deve virar erro NOMEADO
+# no registro de adaptadores, nunca falha silenciosa em S5.
+fontes:
+  - planalto                 # CP, CPP, LEP, Lei 11.343/2006
+  - stf                      # HC, RHC, súmulas vinculantes
+  - stj                      # HC, REsp repetitivo, dosimetria
+
+acervo:
+  colecao: "a preencher"     # ex.: doutrina_penal
+  fallback: null
+
+modelos:
+  default:
+    provider: a-preencher
+    modelo: a-preencher
+    motivo: "a preencher"
+
+template_base: a-preencher
+
+# --- Contagem de prazo: a premissa mais quebrada do núcleo --------------------
+# O núcleo nasce com dias úteis como padrão, herdado do processo civil.
+# Em penal isso está errado em pelo menos: recurso em sentido estrito,
+# revisão criminal (quando há prazo), e prazos da execução penal. Declarar a
+# exceção AQUI, sem tocar em core/, é o teste.
+contagem_prazo:
+  padrao: dias_uteis
+  excecoes:
+    - tipo: recurso_sentido_estrito
+      contagem: dias_corridos
+      base: "a preencher — verificar art. 586 do CPP e norma local"
+    - tipo: a-preencher
+      contagem: dias_corridos
+      base: "a preencher"

@@ -1,0 +1,156 @@
+# =============================================================================
+# DOMÍNIO FAMÍLIA — CATÁLOGO DE DECISÃO (L1)
+#
+# A ordem das regras É a decisão. A primeira que casar vence. Ordem pensada:
+#   1. Peças de natureza urgentíssima e prazo curto primeiro (tutela, agravo).
+#   2. Recursos contra sentença (apelação) antes de embargos, porque embargos
+#      só se justificam quando há vício específico — e a regra de embargos vem
+#      DEPOIS, com gatilho mais estreito.
+#   3. Incidentes e fases próprias (cumprimento de sentença, inventário)
+#      depois, porque são gatilhados por documento, não por decisão.
+#
+# REGRA DE BASE LEGAL
+# -------------------
+# Todo `prazo.base` cita dispositivo. Onde a citação é de memória e não de
+# leitura da fonte viva, o campo leva a marca `[CONFERIR]` — que o validador
+# trata como pendência, não como valor aceito. Publicar "art. 1.003, §5º, CPC"
+# sem ter lido o §5º é exatamente o tipo de rigor de fachada que este projeto
+# existe para combater.
+# =============================================================================
+
+versao: "1.0.0"
+estado: operacional_parcial
+
+regras:
+  # ---------------------------------------------------------------------------
+  # RECURSOS CONTRA SENTENÇA
+  # ---------------------------------------------------------------------------
+
+  - id: sentenca-extincao-sem-resolucao
+    descricao: "Sentença que extingue sem resolução de mérito: cabe apelação"
+    gatilho:
+      tipo_documento: sentenca
+      resultado: extinto_sem_resolucao
+    peca_cabivel: apelacao
+    pecas_alternativas:
+      - peca: embargos_declaracao
+        quando: "havendo omissão, contradição, obscuridade ou erro material na própria sentença"
+    teses_sugeridas:
+      - nulidade-por-falta-fundamentacao
+      - cerceamento-de-defesa
+    prazo:
+      tipo: apelacao
+      dias: 15
+      base: "art. 1.003, §5º, do CPC — CONFERIR leitura literal do dispositivo"
+      contagem: dias_uteis
+
+  - id: sentenca-procedente-ou-improcedente
+    descricao: "Sentença de mérito em família: apelação pela parte sucumbente"
+    gatilho:
+      tipo_documento: sentenca
+      resultado: [procedente, improcedente, parcialmente_procedente]
+    peca_cabivel: apelacao
+    pecas_alternativas:
+      - peca: embargos_declaracao
+        quando: "havendo vício na própria sentença que precise ser sanado antes de recorrer"
+    teses_sugeridas: []          # a preencher: depende da matéria decidida
+    prazo:
+      tipo: apelacao
+      dias: 15
+      base: "art. 1.003, §5º, do CPC — CONFERIR"
+      contagem: dias_uteis
+    observacao: >
+      Regra genérica declarada de propósito. Ela NÃO decide tese: a tese vem do
+      tese-catalogo, e enquanto o catálogo estiver vazio, o S3 marca
+      `precisa_humano: true`. Regra genérica serve para que o pipeline saiba
+      qual PEÇA cabe; não para que ele invente o que dizer nela.
+
+  # ---------------------------------------------------------------------------
+  # PEÇAS URGENTES E INTERLOCUTÓRIAS
+  - id: cumprimento-de-sentenca-alimentos
+    descricao: "Fase de cumprimento de sentença de alimentos: impugnação ou pedido de prisão"
+    gatilho:
+      tipo_documento: decisao_interlocutoria
+      conteudo_contem_todos: [alimentos, cumprimento]
+    peca_cabivel: impugnacao-cumprimento
+    pecas_alternativas:
+      - peca: peticao-simples
+        quando: "o operador atua pela parte credora e busca meios de coerção"
+    teses_sugeridas: []
+    prazo:
+      tipo: impugnacao
+      dias: 15
+      base: "art. 528 do CPC — CONFERIR prazo de impugnação e regime do §1º"
+      contagem: dias_uteis
+
+  # ---------------------------------------------------------------------------
+
+  - id: decisao-interlocutoria-tutela
+    descricao: "Decisão interlocutória em tutela (concedida ou negada): agravo de instrumento"
+    gatilho:
+      tipo_documento: decisao_interlocutoria
+      conteudo_contem: [tutela, liminar]
+    peca_cabivel: agravo-instrumento
+    pecas_alternativas: []
+    teses_sugeridas: []
+    prazo:
+      tipo: agravo_instrumento
+      dias: 15
+      base: "art. 1.003, §5º, do CPC c/c art. 1.015 — CONFERIR rol do 1.015 e parágrado único"
+      contagem: dias_uteis
+
+  - id: decisao-interlocutoria-alimentos
+    descricao: "Decisão sobre alimentos provisórios: agravo de instrumento"
+    gatilho:
+      tipo_documento: decisao_interlocutoria
+      conteudo_contem: [alimentos]
+    peca_cabivel: agravo-instrumento
+    pecas_alternativas: []
+    teses_sugeridas:
+      - binomio-necessidade-possibilidade
+    prazo:
+      tipo: agravo_instrumento
+      dias: 15
+      base: "art. 1.015, I, do CPC — CONFERIR inciso que trata de tutela e alimentos"
+      contagem: dias_uteis
+
+  - id: decisao-interlocutoria-guarda
+    descricao: "Decisão sobre guarda ou convivência: agravo de instrumento"
+    gatilho:
+      tipo_documento: decisao_interlocutoria
+      conteudo_contem: [guarda]
+    peca_cabivel: agravo-instrumento
+    pecas_alternativas: []
+    teses_sugeridas:
+      - melhor-interesse-da-crianca
+    prazo:
+      tipo: agravo_instrumento
+      dias: 15
+      base: "art. 1.015, I, do CPC — CONFERIR"
+      contagem: dias_uteis
+
+  # ---------------------------------------------------------------------------
+  # EMBARGOS DE DECLARAÇÃO — gatilho estreito, vem depois das apelações
+  # ---------------------------------------------------------------------------
+
+  - id: sentenca-com-vicio-de-fundamentacao
+    descricao: "Sentença com omissão, contradição, obscuridade ou erro material: embargos"
+    gatilho:
+      tipo_documento: sentenca
+      conteudo_contem: [omissao, contradicao, obscuridade, erro material]
+    peca_cabivel: embargos-declaracao
+    pecas_alternativas:
+      - peca: apelacao
+        quando: "o vício compromete o próprio direito de recorrer e não cabe apenas saná-lo"
+    teses_sugeridas: []
+    prazo:
+      tipo: embargos_declaracao
+      dias: 5
+      base: "art. 1.023 do CPC — CONFERIR prazo e hipóteses do art. 1.022"
+      contagem: dias_uteis
+
+  # ---------------------------------------------------------------------------
+  # FASES E INCIDENTES
+  # ---------------------------------------------------------------------------
+
+pendentes: []

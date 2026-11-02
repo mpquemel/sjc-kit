@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sjc-kit/core/contratos/schemas/verificacao-citacao.json",
+  "title": "Resultado de verificação de citação",
+  "description": "Contrato entre o portão de citação (core/citacoes) e qualquer adaptador de fonte. Todo adaptador — STF, STJ, TJRJ ou outro — deve produzir exatamente este objeto. O portão não conhece tribunal: conhece este contrato.",
+  "type": "object",
+  "required": [
+    "consulta_executada",
+    "encontrado",
+    "chave_usada",
+    "prova_consulta",
+    "fonte"
+  ],
+  "properties": {
+    "consulta_executada": {
+      "type": "boolean",
+      "description": "A consulta chegou ao servidor e voltou. DISTINTO de 'encontrado'. Sem este campo, 'não achei' e 'quebrei' são a mesma resposta. Origem medida: STJ devolvia a mesma string para acervo vazio, termo longo e falha de rede."
+    },
+    "encontrado": {
+      "type": ["boolean", "null"],
+      "description": "O documento existe. true/false quando há prova; null quando não se sabe. null RETÉM a peça — incerteza não libera."
+    },
+    "chave_usada": {
+      "type": "string",
+      "enum": ["registro", "numeral", "numero_interno", "npu", "termo", "ementa"],
+      "description": "Qual identificador foi usado. Origem medida: buscar por numeral no STJ devolveu o processo homônimo (AREsp/RJ no lugar de REsp/MG). A chave muda a resposta; a saída precisa dizer qual foi."
+    },
+    "total": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Quantidade de documentos devolvidos. total=0 com encontrado=false é resultado legítimo; total alto com chave 'termo' indica ruído de relevância."
+    },
+    "ambiguo": {
+      "type": "boolean",
+      "description": "Mais de um documento casa com a chave. Exige escolha humana; o portão marca Warning, nunca Verified."
+    },
+    "prova_consulta": {
+      "type": "object",
+      "description": "O que exatamente foi perguntado ao servidor. Sem isso não se distingue 'não existe' de 'perguntei errado'. O STF já devolve isto; o STJ não.",
+      "properties": {
+        "campo_enviado": { "type": "string" },
+        "valor_enviado": { "type": "string" },
+        "base": { "type": "string" },
+        "consulta_texto": { "type": "string" }
+      }
+    },
+    "fonte": {
+      "type": "string",
+      "description": "Domínio de origem, ex.: scon.stj.jus.br"
+    },
+    "lido_em": {
+      "type": "string",
+      "format": "date",
+      "description": "Data da leitura. Ficha sem data é afirmação sem autor."
+    },
+    "erro_codigo": {
+      "type": ["string", "null"],
+      "enum": [
+        null,
+        "acervo_vazio",
+        "timeout",
+        "pagina_vazia",
+        "portal_nao_carregou",
+        "sem_cdp",
+        "formato_invalido",
+        "campo_ausente",
+        "botao_indisponivel"
+      ],
+      "description": "Discrimina a causa da falha. 'timeout' e 'pagina_vazia' marcam retem=true; 'acervo_vazio' permite encontrado=false."
+    },
+    "retem": {
+      "type": "boolean",
+      "description": "true quando a peça deve ficar retida. Verdadeiro sempre que encontrado é null ou houve falha de infraestrutura."
+    },
+    "documentos": {
+      "type": "array",
+      "description": "Documentos devolvidos, já normalizados.",
+      "items": {
+        "type": "object",
+        "required": ["chave", "texto"],
+        "properties": {
+          "chave": { "type": "string", "description": "Identidade canônica do documento (ex.: REsp 1533206/MG)." },
+          "registro": { "type": ["string", "null"] },
+          "tribunal": { "type": ["string", "null"] },
+          "orgao": { "type": ["string", "null"] },
+          "relator": { "type": ["string", "null"] },
+          "data_julgamento": { "type": ["string", "null"] },
+          "texto": { "type": "string", "description": "Trecho que fundamenta a tese." },
+          "texto_de": {
+            "type": "string",
+            "enum": ["ementa", "tese", "ata", "voto", "desconhecido"],
+            "description": "De onde veio o texto. 'ata' NÃO fundamenta tese: é registro de sessão. Origem: campo acordao_ata do STF parece ementa e não é."
+          }
+        }
+      }
+    },
+    "aviso_citacao": {
+      "type": ["string", "null"],
+      "description": "O que esta consulta NÃO verifica (vigência, superação, aderência). Toda saída precisa declarar o próprio limite."
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "consulta_executada": { "const": false } } },
+      "then": { "required": ["erro_codigo", "retem"] }
+    },
+    {
+      "if": { "properties": { "encontrado": { "const": null } } },
+      "then": { "properties": { "retem": { "const": true } } }
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+# =============================================================================
+# CONTRATO DE DOMÍNIO — arquivo único que define uma área do direito.
+#
+# Regra de ouro deste arquivo: se preencher isto exigir alterar `core/`,
+# a generalidade do produto é marketing. Nenhum campo daqui pede código.
+#
+# Validação: sjp validar-dominio --dominio <id>
+# Schema:    core/contratos/schemas/dominio.json
+#
+# Valores `a preencher` são VÁLIDOS: significam "declarado, não decidido".
+# O validador os distingue de valor ausente. Domínio com campo a preencher
+# NÃO roda o pipeline — é esqueleto, e o sistema diz isso em voz alta.
+# =============================================================================
+
+id: a-preencher            # minúsculas, sem acento, sem espaço. Ex.: trabalhista
+nome: "a preencher"        # Ex.: "Direito do Trabalho"
+descricao: "a preencher"   # uma frase. Ex.: "Reclamações, recursos e incidentes"
+versao: "0.0.0"
+
+# --- Quem é o cliente deste domínio (vocabulário, não instituição) ----------
+# O núcleo usa `cliente` e `polo_operador` sempre. Este bloco só declara como
+# o domínio LÊ o que já vem no caso: quais polos o operador costuma ocupar.
+#
+# A lista de termos proibidos NÃO é repetida aqui de propósito: ela vive em
+# core/contratos/vocabulario.json, fonte única. Repetir a lista em cada domínio
+# faria o detector de vocabulário acusar a própria documentação da regra.
+polos_usuais:
+  - polo_operador
+  - polo_adverso
+
+# --- Fontes de verificação, em ordem de prioridade ---------------------------
+# Adaptadores que este domínio usa no estágio S5. Cada id precisa existir em
+# adaptadores/registro.py. Fonte inexistente é ERRO de validação, não aviso.
+fontes:
+  - a-preencher
+
+# --- Acervo local (RAG) ------------------------------------------------------
+# Preferência, não filtro (L4): o domínio ordena, nunca exclui.
+acervo:
+  colecao: "a-preencher"
+  fallback: null           # coleção geral consultada quando a específica é magra
+
+# --- Modelos por tipo de peça (L2: rastro de escolha) ------------------------
+# Cada escolha declara `motivo`. Sem motivo, é preferência sem auditoria.
+modelos:
+  default:
+    provider: a-preencher
+    modelo: a-preencher
+    motivo: "a preencher"
+
+# --- Modelo visual ------------------------------------------------------------
+# Caminho relativo ao domínio, ou "../_global/_base.docx" para o global.
+template_base: a-preencher
+
+# --- Prazos -------------------------------------------------------------------
+# Em DIAS ÚTEIS por padrão. Penal quebra isto: prazo em dias corridos.
+# Se o domínio tem prazo corrido, declare aqui e justifique com base legal.
+# O núcleo NÃO assume contagem: recebe a regra e a aplica.
+contagem_prazo:
+  padrao: dias_uteis       # dias_uteis | dias_corridos
+  excecoes:
+    - tipo: a-preencher
+      contagem: dias_corridos
+      base: "a preencher"

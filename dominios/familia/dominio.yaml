@@ -1,0 +1,70 @@
+# =============================================================================
+# DOMÍNIO FAMÍLIA — o primeiro domínio real do kit.
+#
+# ESTADO: operacional-parcial. O catálogo de gatilhos está preenchido com as
+# regras recorrentes do processo de família civil (CPC). As teses estão
+# DECLARADAS e PENDENTES: nenhuma entrou sem precedente conferido na fonte
+# viva, porque a fonte (STJ/STF) só é consultada no adaptador em S5.
+#
+# REGRA DE HONESTIDADE DESTE ARQUIVO
+# ----------------------------------
+# Cada prazo declara `base` com dispositivo que eu consigo citar. Onde a
+# contagem não é a do CPC, `contagem` é declarada explicitamente. Onde eu não
+# tenho certeza da redação do dispositivo, o campo fica `a preencher` em vez
+# de uma citação plausível — citação plausível é o defeito que este projeto
+# existe para combater (10 de 136 peças tinham citação furada).
+#
+# O que NÃO entra aqui: violência doméstica (Lei 11.340/2006), porque tem
+# competência, ritos e peças próprios, e merece domínio separado; e infância
+# (ECA), pela mesma razão. Misturar produziria um domínio que finge cobrir o
+# que não cobre.
+# =============================================================================
+
+id: familia
+nome: "Direito de Família e Sucessões"
+descricao: "Ação de família, alimentos, guarda, divórcio, inventário e os recursos correspondentes"
+versao: "1.0.0"
+estado: operacional_parcial   # verificado pelo validador, não autodeclarado
+# NOTA: `sjp validar-dominio` devolve ESQUELETO enquanto houver pendência `a
+# preencher`. Isso é CORRETO e não é contradição com `operacional_parcial`: o
+# catálogo de GATILHOS está preenchido (o S3 consegue decidir a peça), mas o
+# catálogo de TESES está pendente (o S4 não tem tese conferida para usar).
+# O validador mede pendência, não maturidade — e medir é o que ele sabe fazer.
+
+polos_usuais:
+  - polo_operador             # o operador pode atuar por autor ou por réu;
+  - polo_adverso              # o S3 exige declaração explícita, nunca infere
+
+# --- Fontes de verificação, em ordem de prioridade ---------------------------
+# planalto primeiro porque dispositivo de lei é o fundamento normativo que
+# toda peça precisa e o que menos muda de redação. stj antes de stf porque a
+# matéria de família é predominantemente infraconstitucional.
+fontes:
+  - planalto                  # CPC, CC, Lei 5.869/73 (referência histórica)
+  - stj                       # REsp repetitivo, súmulas de família
+  - stf                       # quando houver questão constitucional
+
+acervo:
+  colecao: "doutrina_familia"
+  fallback: "doutrina_geral"  # preferência, não filtro (L4): nunca exclui
+
+# --- Modelos (L2: rastro de escolha) ------------------------------------------
+# Declarados como pendentes porque a escolha de modelo é do escritório, não
+# minha. O kit não decide por ninguém — e um default inventado seria uma
+# decisão tomada em nome de quem vai pagar a conta.
+modelos:
+  default:
+    provider: a preencher
+    modelo: a preencher
+    motivo: "a preencher — escolha do escritório, com rastro de custo/qualidade"
+
+template_base: "../_template/templates/peca.md"
+
+# --- Contagem de prazo --------------------------------------------------------
+# O CPC conta em dias ÚTEIS (art. 219). Família não tem regra própria de
+# contagem: segue o CPC. Declaro o padrão e NÃO declaro exceções, porque
+# inventá-las seria presumir competência que não verifiquei.
+contagem_prazo:
+  padrao: dias_uteis
+  base_do_padrao: "art. 219 do CPC (Lei 13.105/2015)"
+  excecoes: []

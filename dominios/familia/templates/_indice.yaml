@@ -1,0 +1,43 @@
+# =============================================================================
+# DOMÍNIO FAMÍLIA — TEMPLATES DE PEÇA
+#
+# Cada template é um esqueleto com blocos [OBRIGATÓRIA]. O portão de forma
+# reprova quando um bloco obrigatório falta na peça gerada.
+#
+# REGRA: template não contém texto jurídico pronto. Se contivesse, o modelo
+# copiaria sem adaptar e o operador assinaria frase que não escreveu. Template
+# é estrutura e ordem — nunca argumento.
+#
+# Este arquivo é um ÍNDICE. Os templates individuais ficam em arquivos
+# separados (apelacao.md, agravo-instrumento.md, etc.), porque um template por
+# peça é o que permite o validador checar `peca_cabivel` contra
+# `templates/*.md` sem adivinhar.
+# =============================================================================
+
+versao: "1.0.0"
+
+templates:
+  - id: apelacao
+    arquivo: apelacao.md
+    descricao: "Recurso de apelação contra sentença"
+    prazo_base: "art. 1.003, §5º, do CPC — CONFERIR"
+
+  - id: agravo-instrumento
+    arquivo: agravo-instrumento.md
+    descricao: "Agravo de instrumento contra decisão interlocutória"
+    prazo_base: "art. 1.015 do CPC — CONFERIR rol"
+
+  - id: embargos-declaracao
+    arquivo: embargos-declaracao.md
+    descricao: "Embargos de declaração por vício na decisão"
+    prazo_base: "art. 1.023 do CPC — CONFERIR"
+
+  - id: impugnacao-cumprimento
+    arquivo: impugnacao-cumprimento.md
+    descricao: "Impugnação ao cumprimento de sentença"
+    prazo_base: "art. 525 do CPC — CONFERIR"
+
+  - id: peticao-simples
+    arquivo: peticao-simples.md
+    descricao: "Petição intermediária sem rito próprio"
+    prazo_base: null   # não há prazo próprio: decorre do ato que a exige

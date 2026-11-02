@@ -1,0 +1,33 @@
+# Artefatos de trabalho — NUNCA versionar.
+# Este repositório é público: o que está aqui pode ser lido por qualquer pessoa.
+
+# Dados de caso (peça, processo, cliente) — vazamento, não higiene
+casos/
+*.pdf
+
+# Pareceres internos de agentes: opinião de apoio, não documentação do kit
+PARECER-*.md
+
+# Backups e artefatos de editor/sistema
+*.bak
+*.bak-*
+*.orig
+*.rej
+*~
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# Saída de execução do pipeline (S8 grava minuta .docx no caso, não no repo)
+entrega/
+saida/
+
+# Coletores de fonte externa: frágeis, opcionais, fora do kit
+core/citacoes/_fontes/

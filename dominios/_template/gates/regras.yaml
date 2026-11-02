@@ -1,0 +1,31 @@
+# =============================================================================
+# REGRAS DE GATE DO DOMÍNIO — o que reprova além do genérico.
+#
+# O framework de gates (core/gates) aplica as regras universais: bloco
+# obrigatório presente, citação conferida, prazo com base legal, polo
+# declarado. ESTE arquivo adiciona o que só faz sentido neste domínio.
+#
+# Regra dura: gate de domínio não escreve código. É declaração: condição →
+# veredito. Se um gate aqui precisar de Python, o framework está incompleto —
+# e isso é o detector de acoplamento, não um atalho para escrever código no
+# domínio.
+#
+# Vereditos possíveis (discretos, sem nota):
+#   REPROVA        — impede o protocolo
+#   ADVERTE        — segue, mas registra ressalva no relatório
+#   NAO_AVALIADO   — não foi possível conferir
+# =============================================================================
+
+versao: "0.0.0"
+
+regras: []
+
+# Modelo de regra (descomente e copie ao criar a primeira):
+#
+#  - id: a-preencher
+#    descricao: "uma linha legível no relatório"
+#    aplica_a: [a-preencher]      # ids de templates/, ou ["*"]
+#    condicao: "a preencher"      # expressão declarativa sobre a peça
+#    veredito: REPROVA
+#    fundamento: "a preencher"    # por que isso reprova; sem fundamento é capricho
+#    mensagem: "a preencher"      # o que o operador lê e faz

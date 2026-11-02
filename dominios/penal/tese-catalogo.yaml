@@ -1,0 +1,39 @@
+# =============================================================================
+# DOMÍNIO PENAL — CATÁLOGO DE TESES. ESQUELETO: NENHUMA TESE CONFERIDA.
+#
+# Uma tese entra aqui só depois de: (a) existir na doutrina ou na jurisprudência
+# viva, (b) ter o precedente conferido pelo portão de citação, (c) ter
+# `aderencia` escrita por humano. Nenhuma das três aconteceu.
+#
+# A tentação, neste arquivo, é preencher de memória: "Tema 918/STJ", "Súmula
+# 444 do STJ", etc. Não farei. O projeto inteiro existe porque 10 de 136 peças
+# tinham citação furada; semear o catálogo com citação não conferida seria
+# instalar o defeito na fundação, com aparência de rigor.
+# =============================================================================
+
+versao: "0.0.0"
+estado: esqueleto
+
+teses: []
+
+# -----------------------------------------------------------------------------
+# TESES JÁ IDENTIFICADAS COMO NECESSÁRIAS (declaradas, não preenchidas).
+# `chave_precedente` é ponteiro a conferir, NÃO prova. O portão reprova a tese
+# enquanto `verificado_em: null`.
+# -----------------------------------------------------------------------------
+pendentes:
+  - id: dosimetria-primeira-fase
+    nome: "a preencher — dosimetria: valoração das circunstâncias do art. 59 do CP"
+    falta: [fundamentos, aderencia, precedente_conferido]
+  - id: dosimetria-fracao-minima
+    nome: "a preencher — fração de aumento na segunda fase (agravantes/atenuantes)"
+    falta: [fundamentos, aderencia, precedente_conferido]
+  - id: dosimetria-regime
+    nome: "a preencher — fixação de regime inicial"
+    falta: [fundamentos, aderencia, precedente_conferido]
+  - id: nulidade-cadeia-custodia
+    nome: "a preencher — quebra da cadeia de custódia (art. 158-A a 158-F do CPP)"
+    falta: [fundamentos, aderencia, precedente_conferido]
+  - id: excesso-de-prazo-acusatorio
+    nome: "a preencher — mora estatal e duração razoável (art. 5º, LXXVIII, CF)"
+    falta: [fundamentos, aderencia, precedente_conferido]

@@ -1,0 +1,35 @@
+{
+  "termos_proibidos": [
+    "assistido",
+    "defensoria",
+    "polo_defensoria",
+    "numero_verde",
+    "vara_familia",
+    "pje",
+    "eproc"
+  ],
+  "substitutos": {
+    "assistido": "cliente",
+    "defensoria": "operador",
+    "polo_defensoria": "polo_operador",
+    "vara_familia": "orgao_julgador",
+    "numero_verde": "canal_contato",
+    "pje": "sistema_processual",
+    "eproc": "sistema_processual"
+  },
+  "escopo": ["core", "dominios"],
+  "excecoes": [
+    {
+      "caminho": "core/contratos/vocabulario.json",
+      "motivo": "É a própria lista negra. Citar o termo aqui é o conteúdo do arquivo."
+    },
+    {
+      "caminho": "core/dominio/validador.py",
+      "motivo": "Implementa a checagem; precisa nomear o que procura."
+    },
+    {
+      "caminho": "core/dominio/tests/test_validador.py",
+      "motivo": "Testa o detector; sem o termo literal o teste não testa nada."
+    }
+  ]
+}

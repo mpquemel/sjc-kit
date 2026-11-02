@@ -1,0 +1,260 @@
+{
+  "$comment": "Fixtures de aceitação do portão de citação. RECONSTRUÍDAS a partir dos quatro tipos de falha medidos em 10 peças reais, sem reproduzir texto, nome, idade ou fato de qualquer caso concreto. Repo público: fixture não documenta cliente, documenta o erro.",
+  "origem_do_catalogo": {
+    "medicao": "136 peças -> 45 citações únicas -> 29 conferidas -> 10 peças com citação furada",
+    "data": "2026-10-18",
+    "rastreio_publico": "ver RELATORIO de citações em dev/ (privado, não versionado)"
+  },
+  "fixtures": [
+    {
+      "id": "FX-01-numero-errado",
+      "tipo_de_falha": "numero_errado",
+      "descricao": "Dois julgados da mesma classe, no mesmo tribunal, com numerais adjacentes. A peça cita o segundo; o conteúdo pertence ao primeiro.",
+      "texto": "Conforme decidido no REsp 1.782.820/RJ, o prazo para a execução de alimentos corre da intimação pessoal.",
+      "citação_extraida": {
+        "tipo": "julgado",
+        "chave": "REsp 1782820/RJ",
+        "numero": "1782820",
+        "uf": "RJ"
+      },
+      "resultado_fonte": {
+        "consulta_executada": true,
+        "encontrado": true,
+        "chave_usada": "numeral",
+        "total": 1,
+        "prova_consulta": {
+          "campo_enviado": "numRegistro",
+          "valor_enviado": "2018/0313595-7",
+          "base": "simulado"
+        },
+        "fonte": "simulado",
+        "lido_em": "2026-11-02",
+        "erro_codigo": null,
+        "retem": false,
+        "documentos": [
+          {
+            "chave": "REsp 1782418/RJ",
+            "texto": "prazo",
+            "texto_de": "ementa"
+          }
+        ],
+        "aviso_citacao": null,
+        "existe": true,
+        "conteudo_confere": true
+      },
+      "chave_casada_na_fonte": "REsp 1782418/RJ",
+      "veredito_esperado": "numero_errado",
+      "peca_retida": true,
+      "adversaria": true,
+      "porque_adversaria": "número inexistente deve ser recusado"
+    },
+    {
+      "id": "FX-02-numero-truncado",
+      "tipo_de_falha": "numero_truncado",
+      "descricao": "Numeral que não existe naquele formato de classe. Parece preciso, é inventado.",
+      "texto": "No HC 12.842, a internação por tráfico não é automática.",
+      "citação_extraida": {
+        "tipo": "julgado",
+        "chave": "HC 12842",
+        "numero": "12842"
+      },
+      "resultado_fonte": {
+        "consulta_executada": true,
+        "encontrado": false,
+        "chave_usada": "numeral",
+        "total": 0,
+        "prova_consulta": {
+          "campo_enviado": "numRegistro",
+          "valor_enviado": "",
+          "base": "simulado"
+        },
+        "fonte": "simulado",
+        "lido_em": "2026-11-02",
+        "erro_codigo": "acervo_vazio",
+        "retem": true,
+        "documentos": [],
+        "aviso_citacao": null,
+        "existe": false,
+        "conteudo_confere": null
+      },
+      "veredito_esperado": "numero_truncado",
+      "peca_retida": true,
+      "adversaria": true,
+      "porque_adversaria": "numeral truncado deve ser recusado"
+    },
+    {
+      "id": "FX-03-conteudo-diverso",
+      "tipo_de_falha": "conteudo_diverso",
+      "descricao": "O precedente existe, o numeral está certo, e a tese atribuída é de outra matéria. É o tipo que passa por qualquer conferência que só verifique existência.",
+      "texto": "O AgRg no REsp 1.947.535/SP firmou entendimento sobre cadeia de custódia da prova digital.",
+      "citação_extraida": {
+        "tipo": "julgado",
+        "chave": "AgRg REsp 1947535/SP",
+        "numero": "1947535",
+        "uf": "SP"
+      },
+      "resultado_fonte": {
+        "consulta_executada": true,
+        "encontrado": true,
+        "chave_usada": "numeral",
+        "total": 1,
+        "prova_consulta": {
+          "campo_enviado": "numRegistro",
+          "valor_enviado": "",
+          "base": "simulado"
+        },
+        "fonte": "simulado",
+        "lido_em": "2026-11-02",
+        "erro_codigo": null,
+        "retem": false,
+        "documentos": [
+          {
+            "chave": "AgRg REsp 1947535/SP",
+            "texto": "cárcere privado",
+            "texto_de": "ementa"
+          }
+        ],
+        "aviso_citacao": null,
+        "existe": true,
+        "conteudo_confere": false
+      },
+      "chave_casada_na_fonte": "AgRg REsp 1947535/SP",
+      "veredito_esperado": "conteudo_diverso",
+      "peca_retida": true,
+      "adversaria": true,
+      "porque_adversaria": "documento existe mas diz outra coisa"
+    },
+    {
+      "id": "FX-04-falso-positivo-extracao",
+      "tipo_de_falha": "falso_positivo",
+      "descricao": "O texto diz um numeral e o extrator entendeu outro por prefixo. O relatório atesta um texto que não existe.",
+      "texto": "Aplica-se a Súmula 593 do STJ ao caso concreto.",
+      "citação_extraida": {
+        "tipo": "sumula",
+        "chave": "Sumula 593/STJ",
+        "numero": "593",
+        "tribunal": "STJ"
+      },
+      "resultado_fonte": {
+        "consulta_executada": true,
+        "encontrado": true,
+        "chave_usada": "numeral",
+        "total": 1,
+        "prova_consulta": {
+          "campo_enviado": "sumula",
+          "valor_enviado": "59",
+          "base": "simulado"
+        },
+        "fonte": "simulado",
+        "lido_em": "2026-11-02",
+        "erro_codigo": null,
+        "retem": false,
+        "documentos": [
+          {
+            "chave": "Sumula 59/STJ",
+            "texto": "outra tese",
+            "texto_de": "ementa"
+          }
+        ],
+        "aviso_citacao": null,
+        "existe": true,
+        "conteudo_confere": null
+      },
+      "chave_casada_na_fonte": "Sumula 59/STJ",
+      "veredito_esperado": "falso_positivo",
+      "peca_retida": true,
+      "adversaria": true,
+      "porque_adversaria": "extração truncada não pode casar"
+    },
+    {
+      "id": "FX-05-citacao-correcta",
+      "tipo_de_falha": "nenhuma",
+      "descricao": "Controle negativo: citação correta precisa passar. Um portão que reprova tudo é tão inútil quanto um que aprova tudo.",
+      "texto": "Conforme o REsp 1.782.418/RJ, o prazo corre da intimação pessoal.",
+      "citação_extraida": {
+        "tipo": "julgado",
+        "chave": "REsp 1782418/RJ",
+        "numero": "1782418",
+        "uf": "RJ"
+      },
+      "resultado_fonte": {
+        "consulta_executada": true,
+        "encontrado": true,
+        "chave_usada": "numeral",
+        "total": 1,
+        "prova_consulta": {
+          "campo_enviado": "numRegistro",
+          "valor_enviado": "2018/0313595-7",
+          "base": "simulado"
+        },
+        "fonte": "simulado",
+        "lido_em": "2026-11-02",
+        "erro_codigo": null,
+        "retem": false,
+        "documentos": [
+          {
+            "chave": "REsp 1782418/RJ",
+            "texto": "prazo",
+            "texto_de": "ementa"
+          }
+        ],
+        "aviso_citacao": null,
+        "existe": true,
+        "conteudo_confere": true
+      },
+      "chave_casada_na_fonte": "REsp 1782418/RJ",
+      "veredito_esperado": "ok",
+      "peca_retida": false,
+      "adversaria": false,
+      "porque_adversaria": "controle negativo: citação correta DEVE passar"
+    },
+    {
+      "id": "FX-06-fonte-indisponivel",
+      "tipo_de_falha": "infraestrutura",
+      "descricao": "A consulta não concluiu. NÃO é ausência de documento. O portão precisa reter, não aprovar nem reprovar por inexistência.",
+      "texto": "Conforme o REsp 2.000.000/SP, aplica-se a tese.",
+      "citação_extraida": {
+        "tipo": "julgado",
+        "chave": "REsp 2000000/SP",
+        "numero": "2000000",
+        "uf": "SP"
+      },
+      "resultado_fonte": {
+        "consulta_executada": false,
+        "encontrado": null,
+        "chave_usada": "numeral",
+        "total": 0,
+        "prova_consulta": {},
+        "fonte": "simulado",
+        "lido_em": "2026-11-02",
+        "erro_codigo": "timeout",
+        "retem": true,
+        "documentos": [],
+        "aviso_citacao": "consulta não concluída",
+        "existe": null,
+        "conteudo_confere": null
+      },
+      "veredito_esperado": "nao_avaliado",
+      "peca_retida": true,
+      "adversaria": true,
+      "porque_adversaria": "incerteza não pode liberar"
+    },
+    {
+      "id": "FX-07-ambiguidade-artigo-pagina",
+      "tipo_de_falha": "extracao",
+      "descricao": "Numeral que é artigo e também número de página. O extrator registra a ambiguidade em vez de adivinhar.",
+      "texto": "Conforme o art. 121 do Código Penal (fl. 121), a pena é de reclusão.",
+      "citação_extraida": {
+        "tipo": "dispositivo",
+        "chave": "art. 121",
+        "numero": "121"
+      },
+      "resultado_fonte": null,
+      "veredito_esperado": "nao_avaliado",
+      "peca_retida": true,
+      "exige_ambiguidade": "página",
+      "adversaria": true,
+      "porque_adversaria": "ambiguidade não pode ser adivinhada"
+    }
+  ]
+}

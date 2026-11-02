@@ -1,0 +1,47 @@
+# =============================================================================
+# DOMÍNIO PENAL — CASOS ADVERSARIAIS. ESQUELETO.
+#
+# Estes casos não testam regra penal (não há regra). Testam o NÚCLEO contra as
+# premissas que penal quebra. São os primeiros que devem rodar quando o núcleo
+# ficar pronto, e o resultado esperado hoje é NAO_AVALIADO — nunca REPROVA por
+# erro de código.
+# =============================================================================
+
+versao: "0.0.0"
+estado: esqueleto
+
+casos:
+  - id: prazo-corrido-tratado-como-util
+    categoria: "f"
+    pergunta: "Se o domínio declara dias corridos, o núcleo conta útil em silêncio?"
+    entrada: "a preencher — recurso em sentido estrito com prazo declarado em dominio.yaml"
+    esperado: NAO_AVALIADO
+    porque: "Prazo a mais ou a menos perde o recurso. O núcleo nasceu com dias úteis."
+
+  - id: hc-sem-prazo-vira-null
+    categoria: "a"
+    pergunta: "Prazo null (habeas corpus) é tratado como erro ou como resposta válida?"
+    entrada: "a preencher — HC sem prazo no catálogo"
+    esperado: NAO_AVALIADO
+    porque: "Se null quebrar o pipeline, o núcleo assumiu que toda peça tem prazo."
+
+  - id: dosimetria-sem-tres-fases
+    categoria: "c"
+    pergunta: "Peça de revisão de pena sem as três fases passa como OK?"
+    entrada: "a preencher"
+    esperado: NAO_AVALIADO
+    porque: "Dosimetria incompleta é o erro mais comum em defesa criminal."
+
+  - id: poleo-presumido-em-penal
+    categoria: "b"
+    pergunta: "O núcleo presume polo quando a peça tem o mesmo nome para os dois lados?"
+    entrada: "a preencher — apelação sem declaração de polo"
+    esperado: NAO_AVALIADO
+    porque: "Em penal, apelação existe para defesa e para acusação. Presumir inverte a peça."
+
+  - id: citacao-de-sumula-com-tribunal-separado
+    categoria: "d"
+    pergunta: "Súmula citada por extenso ('Súmula 593 do STJ') casa com a chave canônica?"
+    entrada: "Súmula 593 do STJ"
+    esperado: NAO_AVALIADO
+    porque: "Defeito real medido no extrator em 02/11/2026: o numeral capturava a sigla."

@@ -1,0 +1,40 @@
+# =============================================================================
+# CATÁLOGO DE DECISÃO (L1) — gatilho → peça cabível.
+#
+# É a lacuna mais séria do sistema que este projeto substitui: ninguém sabe
+# por que uma peça foi escolhida. Aqui a escolha é declarada ANTES da redação,
+# com prazo e base legal. O revisor confere se a peça redigida é a peça que a
+# regra mandou.
+#
+# Regra de precedência: a PRIMEIRA regra que casa vence. Ordem importa.
+# Se nenhuma casa → S3 usa o LLM com prompts/estrategia.md e marca
+# confianca: baixa + precisa_humano: true. O sistema nunca fica sem resposta,
+# mas diz quando a resposta não veio de regra.
+#
+# Validação: cada `id` é único; cada `peca_cabivel` existe em templates/;
+# cada `prazo.base` é texto não vazio. `a preencher` é válido e bloqueia o run.
+# =============================================================================
+
+versao: "0.0.0"
+
+regras: []
+
+# Modelo de regra (descomente e copie ao criar a primeira):
+#
+#  - id: a-preencher
+#    descricao: "uma linha, para leitura humana no relatório"
+#    gatilho:
+#      tipo_documento: a-preencher      # sentenca | decisao_interlocutoria | acordao | despacho
+#      resultado: a-preencher           # extinto_sem_resolucao | procedente | improcedente | ...
+#      conteudo_contem: []              # termos que precisam aparecer no documento
+#      conteudo_nao_contem: []          # termos cuja ausência condiciona o gatilho
+#    peca_cabivel: a-preencher          # precisa existir em templates/<id>.md
+#    pecas_alternativas:
+#      - peca: a-preencher
+#        quando: "condição que desloca a escolha"
+#    teses_sugeridas: []                # ids de tese-catalogo.yaml
+#    prazo:
+#      tipo: a-preencher
+#      dias: 0
+#      base: "a preencher"              # ex.: "art. 1.003, §5º, CPC"
+#      contagem: dias_uteis             # herda de dominio.yaml se omitido

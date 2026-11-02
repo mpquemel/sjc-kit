@@ -1,0 +1,34 @@
+# =============================================================================
+# CATÁLOGO DE TESES — o que o elaborador pode usar sem inventar.
+#
+# Função: dar ao estágio de redação (S4) teses com fundamento e precedente
+# âncora, para que ele NÃO invente tese nem citação. Tese fora deste catálogo
+# não é proibida, mas entra marcada `origem: modelo` e cai no revisor com
+# `precisa_humano: true`.
+#
+# Toda citação do catálogo passa pelo portão de citação (core/citacoes).
+# Precedente aqui é PONTEIRO, não prova: a prova está na fonte viva.
+#
+# Validação: cada `id` é único; `precedentes[].chave` segue o formato aceito
+# pelo extrator (ex.: "REsp 1947535/SP", "Tema 918/STJ", "Sumula 593/STJ").
+# =============================================================================
+
+versao: "0.0.0"
+
+teses: []
+
+# Modelo de tese (descomente e copie ao criar a primeira):
+#
+#  - id: a-preencher
+#    nome: "a preencher"
+#    quando_aplicar: "condição objetiva, verificável nos autos"
+#    fundamentos:
+#      - tipo: dispositivo          # dispositivo | sumula | tema | julgado
+#        chave: "art. 1.694 do Código Civil"
+#    precedentes:
+#      - chave: "Tema 918/STJ"
+#        tese_firmada: "a preencher"
+#        aderencia: a-preencher     # como esta tese se conecta ao caso
+#    riscos:
+#      - "contra-argumento conhecido que enfraquece a tese"
+#    origem: catalogo              # catalogo (conferido por humano) | modelo

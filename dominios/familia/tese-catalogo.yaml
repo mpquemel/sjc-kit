@@ -1,0 +1,99 @@
+# =============================================================================
+# DOMÍNIO FAMÍLIA — TESES: ESQUELETO DECLARADO, PRECEDENTE NÃO CONFERIDO.
+#
+# Uma tese entra aqui somente depois de:
+#   (a) existir na doutrina ou na jurisprudência viva;
+#   (b) ter o precedente conferido pelo portão de citação;
+#   (c) ter `aderencia` e `riscos` escritos por humano.
+#
+# Nenhuma das três aconteceu para nenhuma destas. Elas estão NOMEADAS com
+# `verificado_em: null` de propósito: a estrutura do catálogo existe, o
+# conteúdo não foi afirmado. Preencher de memória seria instalar o defeito na
+# fundação do projeto — 10 de 136 peças tinham citação furada, e nenhuma delas
+# tinha aviso.
+#
+# O QUE ISSO CUSTA: o S3 marca `precisa_humano: true` em praticamente todo
+# caso de família até o catálogo ser preenchido com conferência. É o custo
+# correto: um pipeline que inventa tese é mais perigoso do que um que pergunta.
+# =============================================================================
+
+versao: "1.0.0"
+estado: esqueleto
+
+teses:
+  - id: nulidade-por-falta-fundamentacao
+    nome: "Nulidade da sentença por ausência de fundamentação"
+    quando_aplicar: "a decisão não enfrenta argumento capaz de alterar o resultado"
+    fundamentos:
+      - tipo: dispositivo
+        chave: "art. 489, §1º, do CPC"
+      - tipo: dispositivo
+        chave: "art. 93, IX, da Constituição Federal"
+    precedentes: []
+    verificado_em: null
+    aderencia: a preencher
+    riscos:
+      - "fundamentação sucinta não é ausente; o STJ distingue as duas"
+    origem: catalogo
+
+  - id: cerceamento-de-defesa
+    nome: "Cerceamento de defesa por indeferimento de prova essencial"
+    quando_aplicar: "a prova indeferida era necessária e o prejuízo é demonstrável"
+    fundamentos:
+      - tipo: dispositivo
+        chave: "art. 5º, LV, da Constituição Federal"
+      - tipo: dispositivo
+        chave: "art. 369 do CPC"
+    precedentes: []
+    verificado_em: null
+    aderencia: a preencher
+    riscos:
+      - "indeferimento fundamentado de prova inútil não é cerceamento"
+      - "é preciso demonstrar o prejuízo, não apenas a recusa"
+    origem: catalogo
+
+  - id: binomio-necessidade-possibilidade
+    nome: "Fixação de alimentos pelo binômio necessidade-possibilidade"
+    quando_aplicar: "discussão de valor ou de exoneração de alimentos"
+    fundamentos:
+      - tipo: dispositivo
+        chave: "art. 1.694, §1º, do Código Civil"
+    precedentes: []
+    verificado_em: null
+    aderencia: a preencher
+    riscos:
+      - "o binômio não autoriza valor que comprometa a subsistência do devedor"
+      - "necessidade não se presume pela simples afirmação do credor"
+    origem: catalogo
+
+  - id: melhor-interesse-da-crianca
+    nome: "Guarda orientada pelo melhor interesse da criança"
+    quando_aplicar: "disputa de guarda, convivência ou alteração de regime"
+    fundamentos:
+      - tipo: dispositivo
+        chave: "art. 227 da Constituição Federal"
+      - tipo: dispositivo
+        chave: "art. 1.586 do Código Civil"
+    precedentes: []
+    verificado_em: null
+    aderencia: a preencher
+    riscos:
+      - "o princípio não decide sozinho: exige fato específico do caso concreto"
+      - "guarda compartilhada não é regra automática quando há risco"
+    origem: catalogo
+
+  - id: impenhorabilidade-do-bem-de-familia
+    nome: "Impenhorabilidade do bem de família"
+    quando_aplicar: "penhora sobre imóvel residencial do devedor ou de sua família"
+    fundamentos:
+      - tipo: dispositivo
+        chave: "art. 1.650 e seguintes do Código Civil (Lei 8.009/1990)"
+    precedentes: []
+    verificado_em: null
+    aderencia: a preencher
+    riscos:
+      - "há exceções legais à impenhorabilidade que precisam ser afastadas uma a uma"
+      - "a citação do repositório exige conferir se a referência é ao CC ou à Lei 8.009"
+    origem: catalogo
+
+pendentes: []

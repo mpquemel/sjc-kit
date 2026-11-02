@@ -1,0 +1,42 @@
+# =============================================================================
+# DOMÍNIO PENAL — ESTRATÉGIA. ESQUELETO: NENHUMA REGRA DECIDIDA.
+#
+# Arquivo vazio por decisão, não por preguiça. A especificação (§6) exige que
+# este esqueleto exista desde o primeiro commit — ele é o detector de
+# acoplamento. Mas regra de estratégia penal exige operador jurídico que saiba
+# descrever gatilhos; eu não invento aqui. Regra inventada que parece certa é
+# pior que regra ausente: o pipeline a usaria em silêncio.
+#
+# O que ESTE arquivo testa no núcleo, sem precisar de regra nenhuma:
+#   - o validador aceita `regras: []` como estado válido de esqueleto;
+#   - o S3, ao não casar regra, cai no fallback com confianca baixa (não quebra);
+#   - o gate de prazo aceita tipo de prazo desconhecido como NAO_AVALIADO,
+#     nunca como zero dias.
+# =============================================================================
+
+versao: "0.0.0"
+estado: esqueleto
+
+regras: []
+
+# -----------------------------------------------------------------------------
+# GATILHOS JÁ CONHECIDOS COMO NECESSÁRIOS (declarados, sem valores):
+# listar o que falta é diferente de decidir. Estes não casam nada até serem
+# preenchidos, e aparecem no `sjp validar-dominio --dominio penal` como pendência.
+# -----------------------------------------------------------------------------
+pendentes:
+  - id: sentenca-condenatoria
+    descricao: "a preencher — sentença penal condenatória: apelação"
+    falta: [gatilho, peca_cabivel, prazo]
+  - id: sentenca-absolutoria
+    descricao: "a preencher — absolvição: apelação pela acusação (se o polo for acusação)"
+    falta: [gatilho, peca_cabivel, prazo, polo]
+  - id: decisao-pronuncia
+    descricao: "a preencher — pronúncia: recurso em sentido estrito"
+    falta: [gatilho, peca_cabivel, prazo, contagem_prazo]
+  - id: prisao-em-flagrante
+    descricao: "a preencher — flagrante: relaxamento ou liberdade provisória"
+    falta: [gatilho, peca_cabivel, prazo]
+  - id: negativa-de-hc
+    descricao: "a preencher — HC negado: recurso ordinário ou HC no tribunal superior"
+    falta: [gatilho, peca_cabivel, prazo]

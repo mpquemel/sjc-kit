@@ -1,0 +1,31 @@
+# =============================================================================
+# CASOS ADVERSARIAIS DO DOMÍNIO — os que quebram.
+#
+# Regra herdada do método (§ 5): teste que só produz sucesso não validou nada.
+# Cada entrada aqui é uma pergunta: "qual é a entrada que faz este domínio
+# mentir?" O pipeline roda estes casos a cada alteração do domínio.
+#
+# Categorias que se provaram frutíferas em auditoria real:
+#   (a) exceção dentro da regra    — nota interna contaminando o todo
+#   (b) forma ambígua              — dois documentos que casam com o mesmo padrão
+#   (c) dado que contradiz o texto — status inferido contra o caput
+#   (d) formato divergente         — codificação/grafia fora do esperado
+#   (e) estado fora do DOM         — filtro guardado em URL/cookie/sessão
+#   (f) prazo em contagem diversa  — dias corridos tratados como úteis
+#
+# Validação: cada `esperado` é veredito discreto. `a preencher` é válido e
+# bloqueia o run do domínio.
+# =============================================================================
+
+versao: "0.0.0"
+
+casos: []
+
+# Modelo de caso (descomente e copie ao criar o primeiro):
+#
+#  - id: a-preencher
+#    categoria: a          # a..f do cabeçalho, ou livre
+#    pergunta: "a preencher — a entrada que faz o sistema mentir?"
+#    entrada: "a preencher"
+#    esperado: NAO_AVALIADO  # REPROVA | ADVERTE | NAO_AVALIADO
+#    porque: "a preencher — qual erro de produto este caso impede"

@@ -1,0 +1,31 @@
+# =============================================================================
+# DOMÍNIO PENAL — GATES. ESQUELETO.
+#
+# Vazio por decisão. Gate de domínio é declaração de consequência jurídica:
+# "esta falha reprova o protocolo porque <fundamento>". Inventar condenação de
+# consequência em matéria penal é o tipo de erro que custa liberdade.
+#
+# O framework (core/gates) já cobre o genérico: bloco obrigatório ausente,
+# citação não conferida, prazo sem base legal, polo presumido. O que este
+# arquivo testará, quando preenchido, é o específico de penal:
+#   - sentença condenatória sem dosimetria nas três fases declaradas
+#   - peça que pede absolvição sem impugnar a prova de acusação, ponto a ponto
+#   - prazo contado em dias úteis onde o domínio declara dias corridos
+#   - HC com pedido genérico (falta de indicação do ato coator)
+# =============================================================================
+
+versao: "0.0.0"
+estado: esqueleto
+
+regras: []
+
+pendentes:
+  - id: condenatoria-sem-dosimetria
+    descricao: "a preencher — sentença condenatória sem as três fases de dosimetria"
+    falta: [condicao, fundamento]
+  - id: prazo-contagem-divergente
+    descricao: "a preencher — prazo contado em regime diferente do declarado em dominio.yaml"
+    falta: [condicao, fundamento]
+  - id: hc-sem-ato-coator
+    descricao: "a preencher — habeas corpus sem indicação precisa do ato coator"
+    falta: [condicao, fundamento]

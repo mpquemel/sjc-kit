@@ -1,0 +1,79 @@
+# =============================================================================
+# DOMÍNIO FAMÍLIA — CASOS ADVERSARIAIS
+#
+# Regra herdada do método: teste que só produz sucesso não validou nada. Cada
+# entrada pergunta: "qual é a entrada que faz ESTE domínio mentir?"
+#
+# Estes casos não testam o núcleo (isso é trabalho do core). Testam as
+# premissas que o domínio família assume — e que podem estar erradas.
+# =============================================================================
+
+versao: "1.0.0"
+estado: operacional_parcial
+
+casos:
+  - id: sentenca-extintiva-que-tambem-decide-merito
+    categoria: "a"
+    pergunta: >
+      Sentença que extingue sem mérito E decide algo acessório (honorários,
+      custas): o gatilho extintivo basta, ou a apelação precisa impugnar também
+      o acessório?
+    entrada: "sentença com capítulo extintivo e capítulo de honorários"
+    esperado: ADVERTE
+    porque: >
+      Extinção sem mérito não impede impugnação de capítulo autônomo. Regra que
+      casa só o capítulo extintivo faz o operador perder o prazo do outro.
+
+  - id: decisao-com-tutela-e-alimentos
+    categoria: "b"
+    pergunta: >
+      Decisão que trata de tutela E de alimentos ao mesmo tempo casa com duas
+      regras. Qual vence, e o operador sabe que a outra existe?
+    entrada: "decisão interlocutória com ambos os termos"
+    esperado: ADVERTE
+    porque: >
+      A ordem de precedência resolve o casamento, mas o operador precisa ver a
+      regra alternativa no relatório. Duas regras que casam é informação, não
+      ruído.
+
+  - id: prazo-marcado-conferir-chega-ao-protocolo
+    categoria: "c"
+    pergunta: "A marca [CONFERIR] na base do prazo sobrevive até a peça assinada?"
+    entrada: "regra com base de prazo ainda não conferida"
+    esperado: REPROVA
+    porque: >
+      Prazo não conferido não pode fundamentar petição. Se a marca se perder no
+      caminho, o operador protocola citando dispositivo que não leu.
+
+  - id: alimentos-entre-ex-conjuges-vira-binonio
+    categoria: "a"
+    pergunta: >
+      Alimentos entre ex-cônjuges e alimentos a filho menor usam o mesmo binômio?
+      A regra que casa uma situação serve para a outra?
+    entrada: "decisão sobre alimentos a ex-cônjuge"
+    esperado: ADVERTE
+    porque: >
+      A tese de alimentos a filho pressupõe necessidade presumida diversa da do
+      ex-cônjuge. Aplicar a mesma tese troca o fundamento sem avisar.
+
+  - id: guarda-sem-declaracao-de-polo
+    categoria: "b"
+    pergunta: >
+      Pedido de guarda existe para ambos os polos. Se o polo não foi declarado,
+      o domínio presume algo?
+    entrada: "decisão sobre guarda sem declaração de polo_atuacao"
+    esperado: REPROVA
+    porque: >
+      Guarda é pedida pelo pai e pela mãe, com peças de mesmo nome. Polo
+      presumido inverte a peça — e o erro só aparece na assinatura.
+
+  - id: embargos-para-protelar-prazo
+    categoria: "c"
+    pergunta: >
+      Embargos declaratórios interpostos sem vício real, apenas para reabrir
+      prazo: o gate de vício os barra?
+    entrada: "embargos pedindo revisão de mérito, sem omissão/contradição"
+    esperado: ADVERTE
+    porque: >
+      Embargos que não apontam vício podem ser rejeitados como protelatórios
+      (art. 1.026, §2º, do CPC), com multa. A peça não deve nascer assim.

@@ -1,0 +1,77 @@
+# =============================================================================
+# DOMÍNIO FAMÍLIA — REGRAS DE GATE. O que reprova além do genérico.
+#
+# O framework de gates já cobre o universal (bloco obrigatório, citação
+# conferida, prazo com base). Aqui entram as regras que só fazem sentido em
+# família. Cada uma declara FUNDAMENTO: gate sem fundamento jurídico é capricho
+# com aparência de método.
+#
+# Vereditos: REPROVA | ADVERTE | NAO_AVALIADO
+# =============================================================================
+
+versao: "1.0.0"
+estado: operacional_parcial
+
+regras:
+  - id: apelacao-sem-razoes-de-reforma
+    descricao: "Apelação sem seção de razões de reforma é petição vazia"
+    aplica_a: [apelacao]
+    condicao: "bloco 'II — RAZÕES PARA REFORMA' ausente ou com menos de 3 parágrafos"
+    veredito: REPROVA
+    fundamento: "art. 1.010 do CPC exige as razões do pedido de reforma"
+    mensagem: >
+      A apelação precisa dizer o que está errado na sentença e por quê. Sem
+      isso, o tribunal a conhece e a nega por falta de impugnação específica.
+
+  - id: apelacao-sem-impugnacao-especifica
+    descricao: "Não se impugna ponto por ponto o que a sentença decidiu"
+    aplica_a: [apelacao, agravo_instrumento]
+    condicao: "a peça não referencia ao menos um fundamento da decisão recorrida"
+    veredito: ADVERTE
+    fundamento: "impugnação genérica não vence a presunção de acerto da decisão"
+    mensagem: >
+      Cite o trecho da decisão e responda a ele. Recurso que fala do direito em
+      abstrato convence menos que o que responde ao que foi decidido.
+
+  - id: agravo-sem-pecas-obrigatorias
+    descricao: "Agravo de instrumento sem as peças do art. 1.017 do CPC"
+    aplica_a: [agravo_instrumento]
+    condicao: "não há declaração de juntada das peças obrigatórias"
+    veredito: NAO_AVALIADO
+    fundamento: "art. 1.017 do CPC (peças obrigatórias e facultativas)"
+    mensagem: >
+      Confira a lista de peças antes de protocolar. A ausência de peça
+      obrigatória pode levar ao não conhecimento do recurso.
+
+  - id: alimentos-sem-binomio
+    descricao: "Tese de alimentos que não enfrenta necessidade e possibilidade"
+    aplica_a: [apelacao, agravo_instrumento]
+    condicao: "peça discute valor de alimentos sem mencionar necessidade E possibilidade"
+    veredito: ADVERTE
+    fundamento: "art. 1.694, §1º, do Código Civil"
+    mensagem: >
+      O binômio é o critério legal. Argumento que trata só de um lado deixa o
+      juiz decidir pelo outro.
+
+  - id: guarda-sem-fato-concreto
+    descricao: "Disputa de guarda apoiada só no princípio, sem fato"
+    aplica_a: [apelacao, agravo_instrumento]
+    condicao: "peça sobre guarda invoca melhor interesse sem fato específico dos autos"
+    veredito: ADVERTE
+    fundamento: "art. 227 da Constituição Federal; art. 1.586 do Código Civil"
+    mensagem: >
+      Princípio sem fato não decide. Descreva a situação concreta da criança e
+      por que o regime pedido a atende.
+
+  - id: prazo-conferir-marca
+    descricao: "Base de prazo ainda marcada [CONFERIR] no catálogo"
+    aplica_a: ["*"]
+    condicao: "a regra de estratégia aplicada traz '[CONFERIR]' na base do prazo"
+    veredito: REPROVA
+    fundamento: "prazo não conferido não pode fundamentar petição"
+    mensagem: >
+      A base legal do prazo neste catálogo ainda não foi conferida na fonte. O
+      operador precisa conferir o dispositivo antes de protocolar — e depois
+      remover a marca do catálogo.
+
+pendentes: []   # nenhum gate pendente: os seis acima são verificáveis hoje
